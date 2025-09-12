@@ -1,4 +1,4 @@
-package com.songify;
+package com.songify.song;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
