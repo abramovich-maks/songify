@@ -1,10 +1,8 @@
 package com.songify;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -12,9 +10,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
+@Log4j2
 public class SongsController {
 
-    Map<Integer, String> dataBase = new HashMap<>(Map.of(1, "ShawnMendes songs1", 2, "ArianaGrande songs2", 3, "Crimsonsun song3", 4, "Letdown"));
+    Map<Integer, String> dataBase = new HashMap<>(Map.of(
+            1, "ShawnMendes songs1",
+            2, "ArianaGrande songs2",
+            3, "Crimsonsun song3",
+            4, "Letdown"));
 
     @GetMapping("/songs")
     public ResponseEntity<SongsResponseDto> getAllSongs(@RequestParam(required = false) Integer limit) {
@@ -31,7 +34,8 @@ public class SongsController {
     }
 
     @GetMapping("/songs/{id}")
-    public ResponseEntity<SingleSongResponseDto> getSongsById(@PathVariable Integer id) {
+    public ResponseEntity<SingleSongResponseDto> getSongsById(@PathVariable Integer id, @RequestHeader(required = false) String requestId) {
+        log.info(requestId);
         String song = dataBase.get(id);
         if (song == null) {
             return ResponseEntity.notFound().build();
