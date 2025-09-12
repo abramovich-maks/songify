@@ -2,6 +2,7 @@ package com.songify.song;
 
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,8 +55,13 @@ public class SongsController {
     }
 
     @DeleteMapping("/songs/{id}")
-    public ResponseEntity<String> deleteSong(@PathVariable Integer id) {
+    public ResponseEntity<DeleteSongResponseDto> deleteSong(@PathVariable Integer id) {
+
+        if (!dataBase.containsKey(id)) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new DeleteSongResponseDto("Song with id: " + id + " do not exist.", HttpStatus.NOT_FOUND));
+        }
         dataBase.remove(id);
-        return ResponseEntity.ok("Song with id: " +id+ " have been deleted.");
+        return ResponseEntity.ok(new DeleteSongResponseDto("Song with id: " + id + " have been deleted.", HttpStatus.OK));
     }
 }
