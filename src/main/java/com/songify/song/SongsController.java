@@ -52,4 +52,10 @@ public class SongsController {
         log.info("added new song: {}", songName);
         return ResponseEntity.ok(new SingleSongResponseDto(songName));
     }
+
+    @DeleteMapping("/songs/{id}")
+    public ResponseEntity<String> deleteSong(@PathVariable Integer id) {
+        dataBase.remove(id);
+        return ResponseEntity.ok("Song with id: " +id+ " have been deleted.");
+    }
 }
