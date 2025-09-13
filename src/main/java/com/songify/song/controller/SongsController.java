@@ -1,5 +1,7 @@
 package com.songify.song.controller;
 
+import com.songify.song.dto.request.PartiallyUpdateSongRequestDto;
+import com.songify.song.dto.response.PartiallyUpdateSongResponseDto;
 import com.songify.song.dto.response.DeleteSongResponseDto;
 import com.songify.song.dto.response.SingleSongResponseDto;
 import com.songify.song.dto.request.SongRequestDto;
@@ -81,6 +83,30 @@ public class SongsController {
         SongEntity oldSong = dataBase.put(id, newSong);
         log.info("Updated song with id: \"{}\" with oldSongName: \"{}\" to newSongName: \"{}\", oldArtist \"{}\" to newArtist \"{}\"", id, oldSong.song(), newSong.song(), oldSong.artist(), newSong.artist());
         return ResponseEntity.ok(new UpdateSongResponseDto(newSong.song(), newSong.artist()));
+    }
+
+    @PatchMapping("/songs/{id}")
+    public ResponseEntity<PartiallyUpdateSongResponseDto> partiallyUpdateSong(@PathVariable Integer id, @RequestBody PartiallyUpdateSongRequestDto request) {
+        if (!dataBase.containsKey(id)) {
+            throw new SongNotFoundException("Song with id: " + id + " not found");
+        }
+        SongEntity songFromDatabase = dataBase.get(id);
+        SongEntity.SongEntityBuilder builder = SongEntity.builder();
+        if (request.song() != null) {
+            builder.song(request.song());
+            log.info("partially updated song name");
+        } else {
+            builder.song(songFromDatabase.song());
+        }
+        if (request.artist() != null) {
+            builder.artist(request.artist());
+            log.info("partially updated artist");
+        } else {
+            builder.artist(songFromDatabase.artist());
+        }
+        SongEntity updatedSong = builder.build();
+        dataBase.put(id, updatedSong);
+        return ResponseEntity.ok(new PartiallyUpdateSongResponseDto(updatedSong));
     }
 
 }
