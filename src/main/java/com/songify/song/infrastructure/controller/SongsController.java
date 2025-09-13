@@ -1,13 +1,13 @@
-package com.songify.song.controller;
+package com.songify.song.infrastructure.controller;
 
-import com.songify.song.dto.request.PartiallyUpdateSongRequestDto;
-import com.songify.song.dto.response.*;
-import com.songify.song.dto.request.CreateSongRequestDto;
-import com.songify.song.dto.request.UpdateSongRequestDto;
-import com.songify.song.error.SongNotFoundException;
+import com.songify.song.infrastructure.controller.dto.request.PartiallyUpdateSongRequestDto;
+import com.songify.song.infrastructure.controller.dto.response.*;
+import com.songify.song.infrastructure.controller.dto.request.CreateSongRequestDto;
+import com.songify.song.infrastructure.controller.dto.request.UpdateSongRequestDto;
+import com.songify.song.domain.model.SongNotFoundException;
+import com.songify.song.domain.model.SongEntity;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +34,13 @@ public class SongsController {
                     .stream()
                     .limit(limit)
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-            GetAllSongsResponseDto response = new GetAllSongsResponseDto(limitedMap);
+            GetAllSongsResponseDto response = SongMapper.mapFromSongToGetAllSongsResponseDto(limitedMap);
             return ResponseEntity.ok(response);
         }
-        GetAllSongsResponseDto response = new GetAllSongsResponseDto(dataBase);
+        GetAllSongsResponseDto response = SongMapper.mapFromSongToGetAllSongsResponseDto(dataBase);
         return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<GetSongResponseDto> getSongsById(@PathVariable Integer id, @RequestHeader(required = false) String requestId) {
@@ -48,16 +49,17 @@ public class SongsController {
             throw new SongNotFoundException("Song with id: " + id + " not found");
         }
         SongEntity song = dataBase.get(id);
-        GetSongResponseDto response = new GetSongResponseDto(song);
+        GetSongResponseDto response = SongMapper.mapFromSongToGetSongResponseDto(song);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
     public ResponseEntity<CreateSongResponseDto> postSong(@RequestBody @Valid CreateSongRequestDto request) {
-        SongEntity song = new SongEntity(request.song(), request.artist());
+        SongEntity song = SongMapper.mapFromCreateSongRequestDtoToSong(request);
         dataBase.put(dataBase.size() + 1, song);
         log.info("added new song: {}", song);
-        return ResponseEntity.ok(new CreateSongResponseDto(song));
+        CreateSongResponseDto createSongResponseDto = SongMapper.mapFromSongToCreateSongResponseDto(song);
+        return ResponseEntity.ok(createSongResponseDto);
     }
 
     @DeleteMapping("/{id}")
@@ -66,7 +68,7 @@ public class SongsController {
             throw new SongNotFoundException("Song with id: " + id + " not found");
         }
         dataBase.remove(id);
-        return ResponseEntity.ok(new DeleteSongResponseDto("Song with id: " + id + " have been deleted.", HttpStatus.OK));
+        return ResponseEntity.ok(SongMapper.mapFromSongToDeleteSongResponseDto(id));
     }
 
     @PutMapping("/{id}")
@@ -76,10 +78,11 @@ public class SongsController {
         }
         String newSongName = request.song();
         String newArtist = request.artist();
-        SongEntity newSong = new SongEntity(newSongName, newArtist);
+        SongEntity newSong = SongMapper.mapFromUpdateSongRequestDtoToSong(newSongName, newArtist);
         SongEntity oldSong = dataBase.put(id, newSong);
         log.info("Updated song with id: \"{}\" with oldSongName: \"{}\" to newSongName: \"{}\", oldArtist \"{}\" to newArtist \"{}\"", id, oldSong.song(), newSong.song(), oldSong.artist(), newSong.artist());
-        return ResponseEntity.ok(new UpdateSongResponseDto(newSong.song(), newSong.artist()));
+        UpdateSongResponseDto body = SongMapper.mapFromSongToUpdateSongResponseDto(newSong);
+        return ResponseEntity.ok(body);
     }
 
     @PatchMapping("/{id}")
@@ -88,6 +91,7 @@ public class SongsController {
             throw new SongNotFoundException("Song with id: " + id + " not found");
         }
         SongEntity songFromDatabase = dataBase.get(id);
+        SongEntity updatedSong = SongMapper.mapFromPartiallyUpdateSongRequestDtoToSong(request);
         SongEntity.SongEntityBuilder builder = SongEntity.builder();
         if (request.song() != null) {
             builder.song(request.song());
@@ -101,9 +105,9 @@ public class SongsController {
         } else {
             builder.artist(songFromDatabase.artist());
         }
-        SongEntity updatedSong = builder.build();
         dataBase.put(id, updatedSong);
-        return ResponseEntity.ok(new PartiallyUpdateSongResponseDto(updatedSong));
+        PartiallyUpdateSongResponseDto body = SongMapper.mapFromSongToPartiallyUpdateSongResponseDto(updatedSong);
+        return ResponseEntity.ok(body);
     }
 
 }
