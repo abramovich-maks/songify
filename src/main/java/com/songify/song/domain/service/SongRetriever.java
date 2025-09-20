@@ -5,8 +5,7 @@ import com.songify.song.domain.repository.SongRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -18,15 +17,14 @@ public class SongRetriever {
         this.songRepository = songRepository;
     }
 
-    public Map<Integer, SongEntity> findAll() {
+    public List<SongEntity> findAll() {
         return songRepository.findAll();
     }
 
-    public Map<Integer, SongEntity> findAllByLimited(Integer limit) {
-        return songRepository.findAll().entrySet()
+    public List<SongEntity> findAllByLimited(Integer limit) {
+        return songRepository.findAll()
                 .stream()
                 .limit(limit)
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
+                .toList();
     }
 }

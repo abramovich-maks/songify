@@ -1,26 +1,13 @@
 package com.songify.song.domain.repository;
 
 import com.songify.song.domain.model.SongEntity;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
-@Repository
-public class SongRepository {
+public interface SongRepository extends Repository<SongEntity, Long> {
 
-    Map<Integer, SongEntity> dataBase = new HashMap<>(Map.of(
-            1, new SongEntity("ShawnMendes songs1", "Shawn Mendes"),
-            2, new SongEntity("Ariana song1", "Ariana Grande"),
-            3, new SongEntity("Neon Lights", "Crimsonsun"),
-            4, new SongEntity("Go to hell", "Letdown")));
+    SongEntity saveToDatabase(SongEntity song);
 
-    public SongEntity saveToDatabase(SongEntity song) {
-        dataBase.put(dataBase.size() + 1, song);
-        return song;
-    }
-
-    public Map<Integer, SongEntity> findAll() {
-        return dataBase;
-    }
+    List<SongEntity> findAll();
 }
