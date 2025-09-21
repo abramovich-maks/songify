@@ -26,7 +26,7 @@ public class SongMapper {
         return new GetSongResponseDto(song);
     }
 
-    public static DeleteSongResponseDto mapFromSongToDeleteSongResponseDto(Integer id) {
+    public static DeleteSongResponseDto mapFromSongToDeleteSongResponseDto(Long id) {
         return new DeleteSongResponseDto("Song with id: " + id + " have been deleted.", HttpStatus.OK);
     }
 

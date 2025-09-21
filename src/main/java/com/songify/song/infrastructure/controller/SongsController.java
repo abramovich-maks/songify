@@ -2,6 +2,7 @@ package com.songify.song.infrastructure.controller;
 
 import com.songify.song.domain.service.SongAdder;
 import com.songify.song.domain.service.SongBuilder;
+import com.songify.song.domain.service.SongDeleter;
 import com.songify.song.domain.service.SongRetriever;
 import com.songify.song.infrastructure.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.song.infrastructure.controller.dto.response.*;
@@ -24,11 +25,13 @@ public class SongsController {
     private final SongAdder songAdder;
     private final SongRetriever songRetriever;
     private final SongBuilder songBuilder;
+    private final SongDeleter songDeleter;
 
-    public SongsController(SongAdder songAdder, SongRetriever songRetriever, SongBuilder songBuilder) {
+    public SongsController(SongAdder songAdder, SongRetriever songRetriever, SongBuilder songBuilder, SongDeleter songDeleter) {
         this.songAdder = songAdder;
         this.songRetriever = songRetriever;
         this.songBuilder = songBuilder;
+        this.songDeleter = songDeleter;
     }
 
     @GetMapping
@@ -62,13 +65,11 @@ public class SongsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DeleteSongResponseDto> deleteSong(@PathVariable Integer id) {
-        List<SongEntity> allSongs = songRetriever.findAll();
-        if (!allSongs.contains(id)) {
-            throw new SongNotFoundException("Song with id: " + id + " not found");
-        }
-        allSongs.remove(id);
-        return ResponseEntity.ok(SongMapper.mapFromSongToDeleteSongResponseDto(id));
+    public ResponseEntity<DeleteSongResponseDto> deleteSong(@PathVariable Long id) {
+        songRetriever.isExist(id);
+        songDeleter.deleteById(id);
+        DeleteSongResponseDto body = SongMapper.mapFromSongToDeleteSongResponseDto(id);
+        return ResponseEntity.ok(body);
     }
 
     @PutMapping("/{id}")

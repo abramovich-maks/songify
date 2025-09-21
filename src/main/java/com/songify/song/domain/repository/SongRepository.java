@@ -13,4 +13,6 @@ public interface SongRepository extends Repository<SongEntity, Long> {
     List<SongEntity> findAll();
 
     Optional<SongEntity> findById(Long id);
+
+    void deleteById(Long id);
 }
