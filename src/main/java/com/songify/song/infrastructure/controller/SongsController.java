@@ -1,9 +1,6 @@
 package com.songify.song.infrastructure.controller;
 
-import com.songify.song.domain.service.SongAdder;
-import com.songify.song.domain.service.SongBuilder;
-import com.songify.song.domain.service.SongDeleter;
-import com.songify.song.domain.service.SongRetriever;
+import com.songify.song.domain.service.*;
 import com.songify.song.infrastructure.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.song.infrastructure.controller.dto.response.*;
 import com.songify.song.infrastructure.controller.dto.request.CreateSongRequestDto;
@@ -26,12 +23,14 @@ public class SongsController {
     private final SongRetriever songRetriever;
     private final SongBuilder songBuilder;
     private final SongDeleter songDeleter;
+    private final SongUpdater songUpdater;
 
-    public SongsController(SongAdder songAdder, SongRetriever songRetriever, SongBuilder songBuilder, SongDeleter songDeleter) {
+    public SongsController(SongAdder songAdder, SongRetriever songRetriever, SongBuilder songBuilder, SongDeleter songDeleter, SongUpdater songUpdater) {
         this.songAdder = songAdder;
         this.songRetriever = songRetriever;
         this.songBuilder = songBuilder;
         this.songDeleter = songDeleter;
+        this.songUpdater = songUpdater;
     }
 
     @GetMapping
@@ -73,17 +72,10 @@ public class SongsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UpdateSongResponseDto> update(@PathVariable Integer id, @RequestBody @Valid UpdateSongRequestDto request) {
-        List<SongEntity> allSongs = songRetriever.findAll();
-        if (!allSongs.contains(id)) {
-            throw new SongNotFoundException("Song with id: " + id + " not found");
-        }
-        String newSongName = request.song();
-        String newArtist = request.artist();
-        SongEntity newSong = SongMapper.mapFromUpdateSongRequestDtoToSong(newSongName, newArtist);
-        SongEntity oldSong = songAdder.addSong(newSong);
-        log.info("Updated song with id: \"{}\" with oldSongName: \"{}\" to newSongName: \"{}\", oldArtist \"{}\" to newArtist \"{}\"", id, oldSong.
-                getName(), newSong.getId(), oldSong.getArtist(), newSong.getArtist());
+    public ResponseEntity<UpdateSongResponseDto> update(@PathVariable Long id, @RequestBody @Valid UpdateSongRequestDto request) {
+        songRetriever.isExist(id);
+        SongEntity newSong = SongMapper.mapFromUpdateSongRequestDtoToSong(request);
+        songUpdater.updateById(id,newSong);
         UpdateSongResponseDto body = SongMapper.mapFromSongToUpdateSongResponseDto(newSong);
         return ResponseEntity.ok(body);
     }
