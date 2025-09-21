@@ -21,4 +21,6 @@ public interface SongRepository extends Repository<SongEntity, Long> {
     @Modifying
     @Query("UPDATE SongEntity s SET s.name = :#{#newSong.name}, s.artist = :#{#newSong.artist} WHERE s.id = :id")
     void updateById(Long id, SongEntity newSong);
+
+    boolean existsById(Long id);
 }

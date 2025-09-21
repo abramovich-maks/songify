@@ -49,8 +49,7 @@ public class SongsController {
     @GetMapping("/{id}")
     public ResponseEntity<GetSongResponseDto> getSongsById(@PathVariable Long id, @RequestHeader(required = false) String requestId) {
         log.info(requestId);
-        SongEntity songEntity = songRetriever.findById(id)
-                .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
+        SongEntity songEntity = songRetriever.findById(id);
         GetSongResponseDto response = SongMapper.mapFromSongToGetSongResponseDto(songEntity);
         return ResponseEntity.ok(response);
     }
@@ -65,7 +64,6 @@ public class SongsController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DeleteSongResponseDto> deleteSong(@PathVariable Long id) {
-        songRetriever.isExist(id);
         songDeleter.deleteById(id);
         DeleteSongResponseDto body = SongMapper.mapFromSongToDeleteSongResponseDto(id);
         return ResponseEntity.ok(body);
@@ -73,7 +71,6 @@ public class SongsController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UpdateSongResponseDto> update(@PathVariable Long id, @RequestBody @Valid UpdateSongRequestDto request) {
-        songRetriever.isExist(id);
         SongEntity newSong = SongMapper.mapFromUpdateSongRequestDtoToSong(request);
         songUpdater.updateById(id,newSong);
         UpdateSongResponseDto body = SongMapper.mapFromSongToUpdateSongResponseDto(newSong);

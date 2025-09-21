@@ -11,12 +11,15 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class SongUpdater {
     private final SongRepository songRepository;
+    private final SongRetriever songRetriever;
 
-    public SongUpdater(SongRepository songRepository) {
+    public SongUpdater(SongRepository songRepository, SongRetriever songRetriever) {
         this.songRepository = songRepository;
+        this.songRetriever = songRetriever;
     }
 
     public void updateById(Long id, SongEntity newSong) {
+        songRetriever.existById(id);
         songRepository.updateById(id, newSong);
     }
 }
