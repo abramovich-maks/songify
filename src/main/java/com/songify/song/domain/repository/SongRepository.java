@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SongRepository extends Repository<SongEntity, Long> {
 
-    SongEntity saveToDatabase(SongEntity song);
+    SongEntity save(SongEntity song);
 
     List<SongEntity> findAll();
 }
