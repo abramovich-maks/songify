@@ -16,7 +16,7 @@ public class SongRepositoryInMemory implements SongRepository {
             4, new SongEntity("Go to hell", "Letdown")));
 
     @Override
-    public SongEntity saveToDatabase(SongEntity song) {
+    public SongEntity save(SongEntity song) {
         dataBase.put(dataBase.size() + 1, song);
         return song;
     }
