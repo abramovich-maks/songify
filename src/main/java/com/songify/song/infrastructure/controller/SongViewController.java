@@ -1,20 +1,20 @@
 package com.songify.song.infrastructure.controller;
 
+import com.songify.song.domain.model.SongEntity;
+import com.songify.song.domain.repository.SongRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @Controller
 public class SongViewController {
+    private final SongRepository repository;
 
-    Map<Integer, String> dataBase = new HashMap<>(Map.of(
-            1, "ShawnMendes songs1",
-            2, "ArianaGrande songs2",
-            3, "Crimsonsun song3",
-            4, "Letdown"));
+    public SongViewController(SongRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/")
     public String home() {
@@ -23,7 +23,8 @@ public class SongViewController {
 
     @GetMapping("/view/songs")
     public String songs(Model model) {
-        model.addAttribute("songMap", dataBase);
+        List<SongEntity> songs = repository.findAll();
+        model.addAttribute("songs", songs);
         return "song";
     }
 }

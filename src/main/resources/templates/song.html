@@ -78,9 +78,10 @@
 
 <h1>🎶 Songs Gallery</h1>
 <div class="container">
-    <div class="card" th:each="entry : ${songMap}">
-        <div class="id">ID: <span th:text="${entry.key}"></span></div>
-        <div class="song" th:text="${entry.value}"></div>
+    <div class="card" th:each="song : ${songs}">
+        <div class="id">ID: <span th:text="${song.id}"></span></div>
+        <div class="song" th:text="${song.name}"></div>
+        <div class="artist" th:text="${song.artist}"></div>
     </div>
 </div>
 </body>
