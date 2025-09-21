@@ -7,7 +7,6 @@ import com.songify.song.domain.model.SongEntity;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
-import java.util.Map;
 
 public class SongMapper {
 
@@ -39,7 +38,7 @@ public class SongMapper {
         return new SongEntity(dto.song(), dto.artist());
     }
     public static UpdateSongResponseDto mapFromSongToUpdateSongResponseDto(SongEntity newSong) {
-        return new UpdateSongResponseDto(newSong.song(), newSong.artist());
+        return new UpdateSongResponseDto(newSong.getName(), newSong.getArtist());
     }
 
     public static SongEntity mapFromUpdateSongRequestDtoToSong(String newSongName, String newArtist) {

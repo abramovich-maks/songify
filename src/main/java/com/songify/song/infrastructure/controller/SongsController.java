@@ -85,7 +85,7 @@ public class SongsController {
         SongEntity newSong = SongMapper.mapFromUpdateSongRequestDtoToSong(newSongName, newArtist);
         SongEntity oldSong = songAdder.addSong(newSong);
         log.info("Updated song with id: \"{}\" with oldSongName: \"{}\" to newSongName: \"{}\", oldArtist \"{}\" to newArtist \"{}\"", id, oldSong.
-                song(), newSong.song(), oldSong.artist(), newSong.artist());
+                getName(), newSong.getId(), oldSong.getArtist(), newSong.getArtist());
         UpdateSongResponseDto body = SongMapper.mapFromSongToUpdateSongResponseDto(newSong);
         return ResponseEntity.ok(body);
     }
