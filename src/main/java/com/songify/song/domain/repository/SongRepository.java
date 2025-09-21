@@ -10,12 +10,14 @@ import java.util.Optional;
 
 public interface SongRepository extends Repository<SongEntity, Long> {
 
-    SongEntity save(SongEntity song);
-
+    @Query("SELECT s FROM SongEntity s")
     List<SongEntity> findAll();
 
+    @Query("SELECT s FROM SongEntity s WHERE s.id = :id")
     Optional<SongEntity> findById(Long id);
 
+    @Modifying
+    @Query("DELETE FROM SongEntity s WHERE s.id = :id")
     void deleteById(Long id);
 
     @Modifying
@@ -23,4 +25,6 @@ public interface SongRepository extends Repository<SongEntity, Long> {
     void updateById(Long id, SongEntity newSong);
 
     boolean existsById(Long id);
+
+    SongEntity save(SongEntity song);
 }
