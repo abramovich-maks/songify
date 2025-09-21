@@ -22,4 +22,25 @@ public class SongUpdater {
         songRetriever.existById(id);
         songRepository.updateById(id, newSong);
     }
+
+    public SongEntity updatePartiallyById(Long id, SongEntity songFromRequest) {
+        SongEntity songFromDatabase = songRetriever.findById(id);
+        SongEntity.SongEntityBuilder builder = SongEntity.builder();
+        if (songFromRequest.getName() != null) {
+            builder.name(songFromRequest.getName());
+            log.info("partially updated song (old song: \"{}\") with id: {}", songFromDatabase.getName(), id);
+        } else {
+            builder.name(songFromDatabase.getName());
+        }
+        if (songFromRequest.getArtist() != null) {
+            builder.artist(songFromRequest.getArtist());
+            log.info("partially updated artist (old artist: \"{}\") with id: {}", songFromDatabase.getArtist(), id);
+        } else {
+            builder.artist(songFromDatabase.getArtist());
+        }
+        SongEntity toSave = builder.build();
+        updateById(id, toSave);
+        return toSave;
+    }
+
 }

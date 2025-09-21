@@ -30,8 +30,8 @@ public class SongEntity {
     private Long id;
 
     @Column(nullable = false)
-    public String name;
+    private String name;
 
     @Column(nullable = false)
-    public String artist;
+    private String artist;
 }
