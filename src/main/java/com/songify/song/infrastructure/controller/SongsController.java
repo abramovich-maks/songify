@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Log4j2
@@ -45,14 +46,11 @@ public class SongsController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetSongResponseDto> getSongsById(@PathVariable Integer id, @RequestHeader(required = false) String requestId) {
+    public ResponseEntity<GetSongResponseDto> getSongsById(@PathVariable Long id, @RequestHeader(required = false) String requestId) {
         log.info(requestId);
-        List<SongEntity> allSongs = songRetriever.findAll();
-        if (!allSongs.contains(id)) {
-            throw new SongNotFoundException("Song with id: " + id + " not found");
-        }
-        SongEntity song = allSongs.get(id);
-        GetSongResponseDto response = SongMapper.mapFromSongToGetSongResponseDto(song);
+        SongEntity songEntity = songRetriever.findById(id)
+                .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
+        GetSongResponseDto response = SongMapper.mapFromSongToGetSongResponseDto(songEntity);
         return ResponseEntity.ok(response);
     }
 
