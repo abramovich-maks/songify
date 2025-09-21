@@ -2,6 +2,7 @@ package com.songify.song.infrastructure.controller;
 
 import com.songify.song.infrastructure.controller.dto.request.CreateSongRequestDto;
 import com.songify.song.infrastructure.controller.dto.request.PartiallyUpdateSongRequestDto;
+import com.songify.song.infrastructure.controller.dto.request.UpdateSongRequestDto;
 import com.songify.song.infrastructure.controller.dto.response.*;
 import com.songify.song.domain.model.SongEntity;
 import org.springframework.http.HttpStatus;
@@ -41,8 +42,8 @@ public class SongMapper {
         return new UpdateSongResponseDto(newSong.getName(), newSong.getArtist());
     }
 
-    public static SongEntity mapFromUpdateSongRequestDtoToSong(String newSongName, String newArtist) {
-        return new SongEntity(newSongName, newArtist);
+    public static SongEntity mapFromUpdateSongRequestDtoToSong(UpdateSongRequestDto updateSongRequestDto) {
+        return new SongEntity(updateSongRequestDto.song(), updateSongRequestDto.artist());
     }
 }
 
