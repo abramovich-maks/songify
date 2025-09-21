@@ -1,6 +1,4 @@
 package com.songify.song.infrastructure.controller.dto.response;
 
-import com.songify.song.domain.model.SongEntity;
-
-public record GetSongResponseDto(SongEntity song) {
+public record GetSongResponseDto(SongDto song) {
 }

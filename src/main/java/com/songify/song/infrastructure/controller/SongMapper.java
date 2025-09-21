@@ -15,16 +15,25 @@ public class SongMapper {
         return new SongEntity(dto.song(), dto.artist());
     }
 
-    public static CreateSongResponseDto mapFromSongToCreateSongResponseDto(SongEntity song) {
-        return new CreateSongResponseDto(song);
+    public static SongDto mapFromSongToSongDto(SongEntity song) {
+        return new SongDto(song.getId(), song.getName(), song.getArtist());
     }
 
-    public static GetAllSongsResponseDto mapFromSongToGetAllSongsResponseDto(List<SongEntity> database) {
-        return new GetAllSongsResponseDto(database);
+    public static CreateSongResponseDto mapFromSongToCreateSongResponseDto(SongEntity song) {
+        SongDto songDto = SongMapper.mapFromSongToSongDto(song);
+        return new CreateSongResponseDto(songDto);
+    }
+
+    public static GetAllSongsResponseDto mapFromSongToGetAllSongsResponseDto(List<SongEntity> songs) {
+        List<SongDto> songDtos = songs.stream()
+                .map(SongMapper::mapFromSongToSongDto)
+                .toList();
+        return new GetAllSongsResponseDto(songDtos);
     }
 
     public static GetSongResponseDto mapFromSongToGetSongResponseDto(SongEntity song) {
-        return new GetSongResponseDto(song);
+        SongDto songDto = SongMapper.mapFromSongToSongDto(song);
+        return new GetSongResponseDto(songDto);
     }
 
     public static DeleteSongResponseDto mapFromSongToDeleteSongResponseDto(Long id) {
@@ -32,12 +41,14 @@ public class SongMapper {
     }
 
     public static PartiallyUpdateSongResponseDto mapFromSongToPartiallyUpdateSongResponseDto(SongEntity updatedSong) {
-        return new PartiallyUpdateSongResponseDto(updatedSong);
+        SongDto songDto = SongMapper.mapFromSongToSongDto(updatedSong);
+        return new PartiallyUpdateSongResponseDto(songDto);
     }
 
     public static SongEntity mapFromPartiallyUpdateSongRequestDtoToSong(PartiallyUpdateSongRequestDto dto) {
         return new SongEntity(dto.song(), dto.artist());
     }
+
     public static UpdateSongResponseDto mapFromSongToUpdateSongResponseDto(SongEntity newSong) {
         return new UpdateSongResponseDto(newSong.getName(), newSong.getArtist());
     }
