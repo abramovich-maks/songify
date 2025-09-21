@@ -17,7 +17,6 @@ public class SongAdder {
 
     public SongEntity addSong(SongEntity song) {
         log.info("added new song: {}", song);
-        songRepository.save(song);
-        return song;
+        return songRepository.save(song);
     }
 }
