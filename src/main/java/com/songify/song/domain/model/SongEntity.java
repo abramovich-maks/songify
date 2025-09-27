@@ -15,7 +15,12 @@ import java.time.Instant;
 public class SongEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "song_id_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "song_id_seq",
+            sequenceName = "song_id_seq",
+            allocationSize = 1
+    )
     private Long id;
 
     @Column(nullable = false)
