@@ -1,0 +1,10 @@
+ALTER TABLE genre
+ALTER
+COLUMN created_on TYPE TIMESTAMP(6) WITH TIME ZONE,
+    ALTER
+COLUMN created_on SET DEFAULT now();
+
+ALTER TABLE genre
+    ALTER COLUMN uuid SET DEFAULT uuid_generate_v4() ,
+ALTER
+COLUMN uuid SET NOT NULL;
