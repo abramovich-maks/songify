@@ -18,10 +18,10 @@ import lombok.Setter;
 class Genre extends BaseEntity {
 
     @Id
-    @GeneratedValue(generator = "song_id_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "genre_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(
-            name = "song_id_seq",
-            sequenceName = "song_id_seq",
+            name = "genre_id_seq",
+            sequenceName = "genre_id_seq",
             allocationSize = 1
     )
     private Long id;
