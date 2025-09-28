@@ -1,3 +1,5 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 ALTER TABLE album
     ADD created_on TIMESTAMP(6) WITH TIME ZONE DEFAULT now();
 
