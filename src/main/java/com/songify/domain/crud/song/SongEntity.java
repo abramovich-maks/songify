@@ -25,7 +25,7 @@ import java.time.Instant;
 @Table(name = "song")
 @NoArgsConstructor
 @AllArgsConstructor
-public class SongEntity extends BaseEntity {
+class SongEntity extends BaseEntity {
 
     Instant releaseDate;
     @Id
