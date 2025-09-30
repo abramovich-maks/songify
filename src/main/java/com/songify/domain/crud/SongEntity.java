@@ -40,9 +40,6 @@ class SongEntity extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String artist;
-
     Instant releaseDate;
 
     private Long duration;
@@ -53,8 +50,7 @@ class SongEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private SongLanguage language;
 
-    public SongEntity(String name, String artist) {
+    public SongEntity(String name) {
         this.name = name;
-        this.artist = artist;
     }
 }

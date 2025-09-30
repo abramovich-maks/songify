@@ -7,15 +7,15 @@ import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongReq
 class SongDomainMapper {
 
     public static SongEntity mapFromUpdateSongRequestDtoToSong(UpdateSongRequestDto updateSongRequestDto) {
-        return new SongEntity(updateSongRequestDto.song(), updateSongRequestDto.artist());
+        return new SongEntity(updateSongRequestDto.song());
     }
 
     public static SongEntity mapFromPartiallyUpdateSongRequestDtoToSong(PartiallyUpdateSongRequestDto dto) {
-        return new SongEntity(dto.song(), dto.artist());
+        return new SongEntity(dto.song());
     }
 
     public static SongEntity mapFromCreateSongRequestDtoToSong(CreateSongRequestDto dto) {
-        return new SongEntity(dto.song(), dto.artist());
+        return new SongEntity(dto.song());
     }
 
 }
