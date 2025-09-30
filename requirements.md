@@ -2,8 +2,8 @@
 
 ## Wymagania:
 
-1. Można dodać artystę (nazwa artysty)
-2. Można dodać gatunek muzyczny (nazwa gatunku)
+1. ~~Można dodać artystę (nazwa artysty)~~
+2. ~~Można dodać gatunek muzyczny (nazwa gatunku)~~
 3. Można dodać album (tytuł, data wydania, ale musi być w nim przynajmniej jedna piosenka)
 4. Można dodać piosenkę (tytuł, czas trwania, data wydania, język piosenki)
 5. Można dodać artystę od razu z albumem i z piosenką (domyślne wartości)
