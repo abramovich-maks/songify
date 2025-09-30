@@ -34,7 +34,6 @@ public class SongCrudFasade {
         return SongDto.builder()
                 .id(song.getId())
                 .name(song.getName())
-                .artist(song.getArtist())
                 .build();
     }
 
@@ -47,7 +46,6 @@ public class SongCrudFasade {
         return SongDto.builder()
                 .id(addedSong.getId())
                 .name(addedSong.getName())
-                .artist(addedSong.getArtist())
                 .build();
     }
 
@@ -67,16 +65,10 @@ public class SongCrudFasade {
         } else {
             toSave.setName(songFromDatabase.getName());
         }
-        if (songFromRequest.artist() != null) {
-            toSave.setArtist(songFromRequest.artist());
-        } else {
-            toSave.setArtist(songFromDatabase.getArtist());
-        }
         songUpdater.updateById(id, toSave);
         return SongDto.builder()
                 .id(toSave.getId())
                 .name(toSave.getName())
-                .artist(toSave.getArtist())
                 .build();
     }
 

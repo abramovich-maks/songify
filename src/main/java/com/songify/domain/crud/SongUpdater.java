@@ -30,12 +30,6 @@ class SongUpdater {
         } else {
             builder.name(songFromDatabase.getName());
         }
-        if (songFromRequest.getArtist() != null) {
-            builder.artist(songFromRequest.getArtist());
-            log.info("partially updated artist (old artist: \"{}\") with id: {}", songFromDatabase.getArtist(), id);
-        } else {
-            builder.artist(songFromDatabase.getArtist());
-        }
         SongEntity toSave = builder.build();
         updateById(id, toSave);
         return toSave;
