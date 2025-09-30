@@ -8,7 +8,7 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 import java.util.Optional;
 
-public interface SongRepository extends Repository<SongEntity, Long> {
+interface SongRepository extends Repository<SongEntity, Long> {
 
     @Query("SELECT s FROM SongEntity s")
     List<SongEntity> findAll(Pageable pageable);
@@ -27,6 +27,4 @@ public interface SongRepository extends Repository<SongEntity, Long> {
     boolean existsById(Long id);
 
     SongEntity save(SongEntity song);
-
-    long count();
 }
