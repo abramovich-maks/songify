@@ -8,6 +8,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,6 @@ import java.time.Instant;
 @AllArgsConstructor
 class SongEntity extends BaseEntity {
 
-    Instant releaseDate;
     @Id
     @GeneratedValue(generator = "song_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(
@@ -36,11 +36,19 @@ class SongEntity extends BaseEntity {
             allocationSize = 1
     )
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     @Column(nullable = false)
     private String artist;
+
+    Instant releaseDate;
+
     private Long duration;
+
+    @OneToOne()
+    private Genre genre;
 
     @Enumerated(EnumType.STRING)
     private SongLanguage language;
