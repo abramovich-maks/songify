@@ -1,14 +1,9 @@
 package com.songify.infrastructure.crud.song.controller;
 
-import com.songify.domain.crud.song.SongRepository;
-import com.songify.domain.crud.song.dto.SongDto;
-import com.songify.infrastructure.crud.song.controller.dto.response.SongControllerResponseDto;
-import org.springframework.data.domain.Pageable;
+import com.songify.domain.crud.SongRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 @Controller
 public class SongViewController {
