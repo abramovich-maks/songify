@@ -2,6 +2,8 @@ package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
+import com.songify.domain.crud.dto.GenreDto;
+import com.songify.domain.crud.dto.GenreRequestDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.CreateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
@@ -22,11 +24,15 @@ public class SongifyCrudFasade {
     private final SongDeleter songDeleter;
     private final SongUpdater songUpdater;
     private final ArtistAdder artistAdder;
+    private final GenreAdder genreAdder;
 
     public ArtistDto addArtist(ArtistRequestDto dto){
        return artistAdder.addArtist(dto.name());
     }
 
+    public GenreDto addGenre(GenreRequestDto dto){
+        return genreAdder.addGenre(dto.name());
+    }
     public List<SongDto> findAll(final Pageable pageable) {
         return songRetriever.findAll(pageable)
                 .stream().map(song -> SongDto.builder()
