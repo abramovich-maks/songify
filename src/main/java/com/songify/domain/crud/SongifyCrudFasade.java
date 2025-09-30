@@ -1,5 +1,7 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.ArtistDto;
+import com.songify.domain.crud.dto.ArtistRequestDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.CreateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
@@ -14,11 +16,16 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
-public class SongCrudFasade {
+public class SongifyCrudFasade {
     private final SongAdder songAdder;
     private final SongRetriever songRetriever;
     private final SongDeleter songDeleter;
     private final SongUpdater songUpdater;
+    private final ArtistAdder artistAdder;
+
+    public ArtistDto addArtist(ArtistRequestDto dto){
+       return artistAdder.addArtist(dto.name());
+    }
 
     public List<SongDto> findAll(final Pageable pageable) {
         return songRetriever.findAll(pageable)
