@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
@@ -49,25 +48,17 @@ public class SongifyCrudFasade {
         return songAdder.addSong(dto);
     }
 
-    public Set<ArtistDto> findAllArtists() {
-return artistRetriever.findAllArtists();
+    public Set<ArtistDto> findAllArtists(final Pageable pageable) {
+        return artistRetriever.findAllArtists(pageable);
     }
 
-    public List<SongDto> findAll(final Pageable pageable) {
-        return songRetriever.findAll(pageable)
-                .stream().map(song -> SongDto.builder()
-                        .id(song.getId())
-                        .name(song.getName())
-                        .build())
-                .collect(Collectors.toList());
+    public List<SongDto> findAllSongs(final Pageable pageable) {
+        return songRetriever.findAll(pageable);
     }
 
-    public SongDto findById(Long id) {
-        SongEntity song = songRetriever.findSongById(id);
-        return SongDto.builder()
-                .id(song.getId())
-                .name(song.getName())
-                .build();
+    public SongDto findSongDtoById(Long id) {
+        return songRetriever.findSongDtoById(id);
+
     }
 
     public void deleteById(Long id) {

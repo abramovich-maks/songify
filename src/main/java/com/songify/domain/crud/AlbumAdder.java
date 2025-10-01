@@ -15,7 +15,6 @@ class AlbumAdder {
 
     AlbumDto addAlbum(final Long songId, final String title, final Instant instant) {
         SongEntity song = songRetriever.findSongById(songId);
-
         Album album = new Album();
         album.setTitle(title);
         album.addSong(song);
