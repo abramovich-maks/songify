@@ -1,5 +1,6 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.SongLanguageDto;
 import com.songify.domain.crud.util.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -52,5 +53,12 @@ class SongEntity extends BaseEntity {
 
     public SongEntity(String name) {
         this.name = name;
+    }
+
+    SongEntity(final String name, final Instant releaseDate, final Long duration, final SongLanguage language) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.language = language;
     }
 }

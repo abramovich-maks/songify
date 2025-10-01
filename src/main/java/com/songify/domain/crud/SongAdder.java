@@ -1,10 +1,11 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.SongDto;
+import com.songify.domain.crud.dto.SongLanguageDto;
+import com.songify.domain.crud.dto.SongRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
 
 @Log4j2
 @Service
@@ -13,10 +14,12 @@ class SongAdder {
 
     private final SongRepository songRepository;
 
-    SongEntity addSong(final SongEntity song) {
-        log.info("added new song: {}", song);
-        song.setDuration(200L);
-        song.setReleaseDate(Instant.now());
-        return songRepository.save(song);
+    SongDto addSong(final SongRequestDto songDto) {
+        SongLanguageDto language = songDto.language();
+        SongLanguage songLanguage = SongLanguage.valueOf(language.name());
+        SongEntity songEntity = new SongEntity(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);
+        log.info("added new songDto: {}", songDto);
+        SongEntity save = songRepository.save(songEntity);
+        return new SongDto(save.getId(), save.getName());
     }
 }

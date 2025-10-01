@@ -6,9 +6,6 @@ import jakarta.validation.constraints.NotNull;
 public record CreateSongRequestDto(
         @NotNull(message = "song must not be null")
         @NotEmpty(message = "song must not be empty")
-        String song,
-        @NotNull(message = "artist must not be null")
-        @NotEmpty(message = "artist must not be empty")
-        String artist
+        String song
 ) {
 }

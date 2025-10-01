@@ -1,4 +1,10 @@
 package com.songify.infrastructure.crud.song.controller.dto.response;
 
-public record UpdateSongResponseDto(Long id, String song,String artist) {
+import java.time.Instant;
+
+public record UpdateSongResponseDto(
+        String name,
+        Instant releaseDate,
+        Long duration
+) {
 }
