@@ -22,7 +22,7 @@
 18. Gdy nie ma przypisanego gatunku muzycznego do piosenki, to wyświetlamy "default"
 19. Można wyświetlać wszystkie piosenki
 20. Można wyświetlać wszystkie gatunki
-21. Można wyświetlać wszystkich artystów
+21. ~~Można wyświetlać wszystkich artystów~~
 22. Można wyświetlać wszystkie albumy
 23. Można wyświetlać konkretne albumy z artystami oraz piosenkami w albumie
 24. Można wyświetlać konkretne gatunki muzyczne wraz z piosenkami
