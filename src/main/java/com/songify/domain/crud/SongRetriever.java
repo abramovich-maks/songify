@@ -20,7 +20,7 @@ class SongRetriever {
         return songRepository.findAll(pageable);
     }
 
-    SongEntity findSongDtoById(Long id) {
+    SongEntity findSongById(Long id) {
         return songRepository.findById(id)
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
     }
