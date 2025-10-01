@@ -20,7 +20,7 @@
 16. Można przypisać artystów do albumów (album może mieć więcej artystów, artysta może mieć kilka albumów)
 17. Można przypisać tylko jeden gatunek muzyczny do piosenki
 18. Gdy nie ma przypisanego gatunku muzycznego do piosenki, to wyświetlamy "default"
-19. Można wyświetlać wszystkie piosenki
+19. ~~Można wyświetlać wszystkie piosenki~~
 20. Można wyświetlać wszystkie gatunki
 21. ~~Można wyświetlać wszystkich artystów~~
 22. Można wyświetlać wszystkie albumy
