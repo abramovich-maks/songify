@@ -2,7 +2,6 @@ package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.AlbumDto;
 import com.songify.domain.crud.dto.AlbumDtoWithArtistAndSongs;
-import com.songify.domain.crud.dto.AlbumInfo;
 import com.songify.domain.crud.dto.AlbumRequestDto;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
@@ -67,7 +66,7 @@ public class SongifyCrudFasade {
         return albumRetriever.findAlbumByIdWithArtistAndSongs(id);
     }
 
-    public void deleteById(Long id) {
+    public void deleteSongById(Long id) {
         songRetriever.existById(id);
         songDeleter.deleteById(id);
     }

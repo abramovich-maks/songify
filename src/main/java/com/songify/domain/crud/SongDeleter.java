@@ -1,6 +1,7 @@
 package com.songify.domain.crud;
 
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
@@ -8,18 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Log4j2
 @Transactional
+@AllArgsConstructor(access = lombok.AccessLevel.PACKAGE)
 class SongDeleter {
 
     private final SongRepository songRepository;
-    private final SongRetriever songRetriever;
-
-     SongDeleter(SongRepository songRepository, SongRetriever songRetriever) {
-        this.songRepository = songRepository;
-        this.songRetriever = songRetriever;
-    }
 
     void deleteById(Long id) {
-        songRetriever.existById(id);
         songRepository.deleteById(id);
         log.info("Deleted song by id: {}", id);
     }
