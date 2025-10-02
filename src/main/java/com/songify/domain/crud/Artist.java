@@ -40,4 +40,8 @@ class Artist extends BaseEntity {
 
     @ManyToMany
     private Set<Album> albums = new HashSet<>();
+
+    void removeAlbum(Album album) {
+        albums.remove(album);
+    }
 }

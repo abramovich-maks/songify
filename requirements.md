@@ -7,7 +7,7 @@
 3. ~~Można dodać album (tytuł, data wydania, ale musi być w nim przynajmniej jedna piosenka)~~
 4. ~~Można dodać piosenkę (tytuł, czas trwania, data wydania, język piosenki)~~
 5. Można dodać artystę od razu z albumem i z piosenką (domyślne wartości)
-6. Można usunąć artystę (usuwamy wtedy jego piosenki oraz albumy, ale jeśli było więcej niż jeden artysta w albumie, to usuwamy tylko artystę z albumu i samego artystę)
+6. ~~Można usunąć artystę (usuwamy wtedy jego piosenki oraz albumy, ale jeśli było więcej niż jeden artysta w albumie, to usuwamy tylko artystę z albumu i samego artystę)~~
 7. Można usunąć gatunek muzyczny (ale nie może istnieć piosenka z takim gatunkiem)
 8. Można usunąć album (ale dopiero wtedy kiedy nie ma już żadnej piosenki przypisanej do albumu)
 9. ~~Można usunąć piosenkę, ale nie usuwamy albumu i artystów gdy była tylko 1 piosenka w albumie~~
