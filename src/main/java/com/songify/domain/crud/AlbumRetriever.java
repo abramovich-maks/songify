@@ -5,8 +5,10 @@ import com.songify.domain.crud.dto.AlbumDtoWithArtistAndSongs;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.SongDto;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,5 +42,12 @@ class AlbumRetriever {
     Album findById(final Long albumId) {
         return albumRepository.findById(albumId)
                 .orElseThrow(() -> new ArtistNotFoundExceptions("Artist with id: " + albumId + " not found"));
+    }
+
+    List<AlbumDto> findAll(final Pageable pageable) {
+        List<Album> allAlbums = albumRepository.findAll(pageable);
+        return allAlbums.stream()
+                .map(album -> new AlbumDto(album.getId(), album.getTitle()))
+                .toList();
     }
 }

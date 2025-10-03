@@ -1,11 +1,13 @@
 package com.songify.domain.crud;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -32,4 +34,6 @@ interface AlbumRepository extends Repository<Album, Long> {
     int deleteByIdIn(Collection<Long> ids);
 
     Optional<Album> findById(Long albumId);
+
+    List<Album> findAll(Pageable pageable);
 }

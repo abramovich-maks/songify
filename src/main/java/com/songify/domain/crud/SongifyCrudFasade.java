@@ -61,6 +61,10 @@ public class SongifyCrudFasade {
         return songRetriever.findAll(pageable);
     }
 
+    public List<AlbumDto> findAllAlbums(final Pageable pageable) {
+        return albumRetriever.findAll(pageable);
+    }
+
     public SongDto findSongDtoById(Long id) {
         return songRetriever.findSongDtoById(id);
     }
@@ -82,7 +86,7 @@ public class SongifyCrudFasade {
         artistAssigner.addArtistToAlbum(artistId, albumId);
     }
 
-    public ArtistDto addArtistWithDefaultAlbumAndSing(ArtistRequestDto dto){
+    public ArtistDto addArtistWithDefaultAlbumAndSing(ArtistRequestDto dto) {
         return artistAdder.addArtistWithDefaultAlbumAndSong(dto);
     }
 
