@@ -9,6 +9,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -24,9 +25,14 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
-@Table(name = "song")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        name = "song",
+        indexes = @Index(
+                name = "idx_song_name",
+                columnList = "name"
+        ))
 class SongEntity extends BaseEntity {
 
     @Id
