@@ -8,5 +8,6 @@ public enum SongLanguageDto {
     GERMAN,
     ITALIAN,
     JAPANESE,
-    OTHER
+    OTHER,
+    DEFAULT
 }

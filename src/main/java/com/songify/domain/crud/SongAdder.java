@@ -22,4 +22,12 @@ class SongAdder {
         SongEntity save = songRepository.save(songEntity);
         return new SongDto(save.getId(), save.getName());
     }
+
+    SongEntity addDefaultSong(final SongRequestDto songDto) {
+        SongLanguageDto language = songDto.language();
+        SongLanguage songLanguage = SongLanguage.valueOf(language.name());
+        SongEntity songEntity = new SongEntity(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);
+        log.info("added new default song: {}", songDto);
+        return songRepository.save(songEntity);
+    }
 }

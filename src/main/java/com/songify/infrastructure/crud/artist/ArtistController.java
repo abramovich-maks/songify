@@ -30,9 +30,15 @@ class ArtistController {
 
     private final SongifyCrudFasade songifyCrudFasade;
 
-    @PostMapping("/{name}")
+    @PostMapping()
     public ResponseEntity<ArtistDto> postArtist(@RequestBody ArtistRequestDto artistRequestDto) {
         ArtistDto artistDto = songifyCrudFasade.addArtist(artistRequestDto);
+        return ResponseEntity.ok(artistDto);
+    }
+
+    @PostMapping("/album/song")
+    public ResponseEntity<ArtistDto> addArtistWithDefaultAlbumAndSing(@RequestBody ArtistRequestDto artistRequestDto) {
+        ArtistDto artistDto = songifyCrudFasade.addArtistWithDefaultAlbumAndSing(artistRequestDto);
         return ResponseEntity.ok(artistDto);
     }
 
