@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
+import static com.songify.infrastructure.crud.artist.ArtistControllerMapper.getAddArtistToAlbumResponseDto;
 import static com.songify.infrastructure.crud.artist.ArtistControllerMapper.getDeleteArtistResponseDto;
 
 @RestController
@@ -43,6 +45,13 @@ class ArtistController {
     public ResponseEntity<DeleteArtistResponseDto> deleteArtistWithAlbumsAndSongs(@PathVariable Long artistId) {
         songifyCrudFasade.deleteArtistByIdWithAlbumsAndSongs(artistId);
         DeleteArtistResponseDto body = getDeleteArtistResponseDto(artistId);
+        return ResponseEntity.ok(body);
+    }
+
+    @PutMapping("/{artistId}/{albumId}")
+    public ResponseEntity<AddArtistToAlbumResponseDto> addArtistToAlbum(@PathVariable Long artistId, @PathVariable Long albumId) {
+        songifyCrudFasade.addArtistToAlbum(artistId, albumId);
+        AddArtistToAlbumResponseDto body = getAddArtistToAlbumResponseDto(artistId, albumId);
         return ResponseEntity.ok(body);
     }
 }

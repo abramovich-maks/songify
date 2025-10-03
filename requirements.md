@@ -17,7 +17,7 @@
 13. Można edytować piosenkę (czas trwania, artystę, nazwę piosenki)
 14. Można przypisać piosenki tylko do albumów
 15. Można przypisać piosenki do artysty (poprzez album)
-16. Można przypisać artystów do albumów (album może mieć więcej artystów, artysta może mieć kilka albumów)
+16. ~~Można przypisać artystów do albumów (album może mieć więcej artystów, artysta może mieć kilka albumów)~~ 
 17. Można przypisać tylko jeden gatunek muzyczny do piosenki
 18. Gdy nie ma przypisanego gatunku muzycznego do piosenki, to wyświetlamy "default"
 19. ~~Można wyświetlać wszystkie piosenki~~
