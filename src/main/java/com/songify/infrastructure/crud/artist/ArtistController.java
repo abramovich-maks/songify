@@ -3,6 +3,7 @@ package com.songify.infrastructure.crud.artist;
 import com.songify.domain.crud.SongifyCrudFasade;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
+import com.songify.domain.crud.dto.ArtistWithAlbumDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +48,12 @@ class ArtistController {
         Set<ArtistDto> allArtists = songifyCrudFasade.findAllArtists(pageable);
         AllArtistsDto allArtistsDto = new AllArtistsDto(allArtists);
         return ResponseEntity.ok(allArtistsDto);
+    }
+
+    @GetMapping("/{artistId}")
+    public ResponseEntity<ArtistWithAlbumDto> findArtistByIdWithAlbum(@PathVariable Long artistId) {
+        ArtistWithAlbumDto artistByIdWithAlbum = songifyCrudFasade.findArtistByIdWithAlbum(artistId);
+        return ResponseEntity.ok(artistByIdWithAlbum);
     }
 
     @DeleteMapping("/{artistId}")

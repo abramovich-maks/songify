@@ -26,7 +26,7 @@
 22. ~~Można wyświetlać wszystkie albumy~~
 23. ~~Można wyświetlać konkretne albumy z artystami oraz piosenkami w albumie~~
 24. ~~Można wyświetlać konkretne gatunki muzyczne wraz z piosenkami i artystami~~
-25. Można wyświetlać konkretnych artystów wraz z ich albumami
+25. ~~Można wyświetlać konkretnych artystów wraz z ich albumami~~
 26. Chcemy mieć trwałe dane
 
 
