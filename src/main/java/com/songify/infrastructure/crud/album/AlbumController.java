@@ -33,7 +33,7 @@ class AlbumController {
     }
 
     @GetMapping("/{albumId}")
-    public ResponseEntity<AlbumDtoWithArtistAndSongs> getAlbums(@PathVariable final Long albumId) {
+    public ResponseEntity<AlbumDtoWithArtistAndSongs> getAlbumById(@PathVariable final Long albumId) {
         AlbumDtoWithArtistAndSongs albumByIdWithArtistAndSong = songifyCrudFasade.findAlbumByIdWithArtistAndSong(albumId);
         return ResponseEntity.ok(albumByIdWithArtistAndSong);
     }

@@ -28,11 +28,12 @@ public class SongifyCrudFasade {
     private final SongRetriever songRetriever;
     private final SongDeleter songDeleter;
     private final SongUpdater songUpdater;
-    private final ArtistAdder artistAdder;
     private final GenreAdder genreAdder;
+    private final GenreRetriever genreRetriever;
     private final AlbumAdder albumAdder;
-    private final ArtistRetriever artistRetriever;
     private final AlbumRetriever albumRetriever;
+    private final ArtistAdder artistAdder;
+    private final ArtistRetriever artistRetriever;
     private final ArtisDeleter artisDeleter;
     private final ArtistAssigner artistAssigner;
     private final ArtistUpdater artistUpdater;
@@ -63,6 +64,10 @@ public class SongifyCrudFasade {
 
     public List<AlbumDto> findAllAlbums(final Pageable pageable) {
         return albumRetriever.findAll(pageable);
+    }
+
+    public Set<GenreDto> findAllGenres(final Pageable pageable){
+        return genreRetriever.findAll(pageable);
     }
 
     public SongDto findSongDtoById(Long id) {
