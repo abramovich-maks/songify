@@ -41,6 +41,9 @@ class Artist extends BaseEntity {
     @ManyToMany
     private Set<Album> albums = new HashSet<>();
 
+    @ManyToMany(mappedBy = "artists")
+    private Set<SongEntity> songs = new HashSet<>();
+
     void removeAlbum(Album album) {
         albums.remove(album);
     }
