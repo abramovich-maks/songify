@@ -17,8 +17,8 @@ interface AlbumRepository extends Repository<Album, Long> {
 
     @Query("""
             select a from Album a
-            join fetch a.songs songs
-            join fetch a.artists artists
+            left join fetch a.songs songs
+            left join fetch a.artists artists
             where a.id = :id""")
     Optional<Album> findAlbumByIdWithSongsAndArtists(Long id);
 
@@ -36,4 +36,14 @@ interface AlbumRepository extends Repository<Album, Long> {
     Optional<Album> findById(Long albumId);
 
     List<Album> findAll(Pageable pageable);
+
+    @Modifying
+    @Query("delete from Album a where a.id = :id")
+    void deleteById(Long id);
+
+    @Query("""
+            select a from Album a
+            left join fetch a.songs songs
+            where a.id = :id""")
+    Optional<Album> findAlbumByIdWithSongs(Long id);
 }

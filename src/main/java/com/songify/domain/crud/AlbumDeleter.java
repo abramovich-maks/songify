@@ -14,4 +14,8 @@ class AlbumDeleter {
     void deleteAllAlbumsByIds(final Set<Long> albumsIdsToDelete) {
         albumRepository.deleteByIdIn(albumsIdsToDelete);
     }
+
+    void deleteById(final Long id) {
+        albumRepository.deleteById(id);
+    }
 }

@@ -34,6 +34,7 @@ public class SongifyCrudFasade {
     private final GenreRetriever genreRetriever;
     private final AlbumAdder albumAdder;
     private final AlbumRetriever albumRetriever;
+    private final AlbumDeleter albumDeleter;
     private final ArtistAdder artistAdder;
     private final ArtistRetriever artistRetriever;
     private final ArtisDeleter artisDeleter;
@@ -91,6 +92,14 @@ public class SongifyCrudFasade {
     public void deleteSongById(Long id) {
         songRetriever.existById(id);
         songDeleter.deleteById(id);
+    }
+
+    public void deleteAlbumById(Long albumId){
+        AlbumDtoWithSongs album = albumRetriever.findAlbumByIdWithSongs(albumId);
+        if (!album.songs().isEmpty()) {
+            throw new AlbumNotEmptyException("Album with id: " + albumId + " contains songs and cannot be deleted");
+        }
+        albumDeleter.deleteById(albumId);
     }
 
     public void deleteArtistByIdWithAlbumsAndSongs(Long artistId) {
