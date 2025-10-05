@@ -2,9 +2,7 @@ package com.songify.infrastructure.crud.song.controller;
 
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
-import com.songify.infrastructure.crud.song.controller.dto.request.CreateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
-import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToArtistResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToGenreResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongResponseDto;
@@ -42,11 +40,6 @@ public class SongControllerMapper {
         return new DeleteSongResponseDto("Song with id: " + id + " have been deleted.", HttpStatus.OK);
     }
 
-    public static PartiallyUpdateSongResponseDto mapFromSongToPartiallyUpdateSongResponseDto(SongDto updatedSong) {
-        SongControllerResponseDto dto = mapFromSongToSongDto(updatedSong);
-        return new PartiallyUpdateSongResponseDto(dto);
-    }
-
     public static UpdateSongResponseDto mapFromSongToUpdateSongResponseDto(SongRequestDto newSong) {
         return new UpdateSongResponseDto(newSong.name(), newSong.releaseDate(), newSong.duration());
     }
@@ -65,5 +58,13 @@ public class SongControllerMapper {
 
     public static AddSongToGenreResponseDto createAddSongToGenreResponse(final Long songId, final Long genreId) {
         return new AddSongToGenreResponseDto("For the song with id: " + songId + " the genre was changed to id: " + genreId, HttpStatus.OK);
+    }
+
+    public static PartiallyUpdateSongResponseDto createPartiallyUpdatedSongResponse(final PartiallyUpdateSongRequestDto request) {
+        return new PartiallyUpdateSongResponseDto(request.name(), request.releaseDate(), request.duration(), request.language(), request.genreId(), request.artistIds(), request.albumId());
+    }
+
+    public static SongRequestDto mapFromPartiallyUpdateSongRequestDtoToSongRequestDto(final PartiallyUpdateSongRequestDto request) {
+        return new SongRequestDto(request.name(), request.releaseDate(), request.duration(), request.language(), request.genreId(), request.artistIds(), request.albumId());
     }
 }

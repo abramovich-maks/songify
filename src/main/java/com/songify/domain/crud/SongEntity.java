@@ -60,6 +60,9 @@ class SongEntity extends BaseEntity {
     @ManyToMany
     private Set<Artist> artists = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Album album;
+
     @Enumerated(EnumType.STRING)
     private SongLanguage language;
 
@@ -72,6 +75,16 @@ class SongEntity extends BaseEntity {
         this.releaseDate = releaseDate;
         this.duration = duration;
         this.language = language;
+    }
+
+    public SongEntity(final String name, final Instant releaseDate, final Long duration, final SongLanguage language, final Genre genre, final Set<Artist> artists, final Album album) {
+        this.name = name;
+        this.releaseDate = releaseDate;
+        this.duration = duration;
+        this.language = language;
+        this.genre = genre;
+        this.artists = artists;
+        this.album = album;
     }
 
     void addArtist(final Artist artist) {

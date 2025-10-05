@@ -3,6 +3,7 @@ package com.songify.infrastructure.crud.song.controller;
 import com.songify.domain.crud.SongifyCrudFasade;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
+import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToAlbumResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToArtistResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToGenreResponseDto;
@@ -10,6 +11,8 @@ import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongRe
 import com.songify.infrastructure.crud.song.controller.dto.response.DeleteSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetAllSongsResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetSongResponseDto;
+import com.songify.infrastructure.crud.song.controller.dto.response.PartiallyUpdateSongResponseDto;
+import com.songify.infrastructure.crud.song.controller.dto.response.SongControllerResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -31,7 +35,9 @@ import java.util.List;
 
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createAddSongToArtistResponse;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createAddSongToGenreResponse;
+import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createPartiallyUpdatedSongResponse;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createSongResponse;
+import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromPartiallyUpdateSongRequestDtoToSongRequestDto;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToDeleteSongResponseDto;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToGetAllSongsResponseDto;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToGetSongResponseDto;
@@ -102,11 +108,11 @@ public class SongsController {
 //        return ResponseEntity.ok(body);
 //    }
 //
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<PartiallyUpdateSongResponseDto> partiallyUpdateSong(@PathVariable Long id, @RequestBody PartiallyUpdateSongRequestDto request) {
-//        SongDto updatedSong = SongControllerMapper.fromPartialRequest(request);
-//        SongDto saveSong = songFasade.updatePartiallyById(id, updatedSong);
-//        PartiallyUpdateSongResponseDto body = mapFromSongToPartiallyUpdateSongResponseDto(saveSong);
-//        return ResponseEntity.ok(body);
-//    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<PartiallyUpdateSongResponseDto> partiallyUpdateSong(@PathVariable Long id, @RequestBody PartiallyUpdateSongRequestDto request) {
+        SongRequestDto requestDto = mapFromPartiallyUpdateSongRequestDtoToSongRequestDto(request);
+        songFasade.updatePartiallyById(id, requestDto);
+        PartiallyUpdateSongResponseDto body = createPartiallyUpdatedSongResponse(request);
+        return ResponseEntity.ok(body);
+    }
 }

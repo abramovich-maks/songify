@@ -14,7 +14,7 @@
 10. ~~Można edytować nazwę artysty~~
 11. ~~Można edytować nazwę gatunku muzycznego~~
 12. Można edytować album (dodawać piosenki, artystów, zmieniać nazwę albumu)
-13. Można edytować piosenkę (czas trwania, artystę, nazwę piosenki)
+13. ~~Można edytować piosenkę (nazwe piosenki, date wydania, długość piosenki w sekundach, język piosenki, id gatunku muzycznego, id artysty, id albumu)~~
 14. ~~Można przypisać piosenki do albumów (poprzez song)~~
 15. ~~Można przypisać piosenki do artysty (poprzez song)~~
 16. ~~Można przypisać artystów do albumów (album może mieć więcej artystów, artysta może mieć kilka albumów)~~ 

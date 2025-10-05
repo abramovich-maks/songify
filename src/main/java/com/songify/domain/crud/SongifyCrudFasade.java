@@ -11,7 +11,6 @@ import com.songify.domain.crud.dto.GenreDtoWithSongsAndArtist;
 import com.songify.domain.crud.dto.GenreRequestDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
-import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -136,21 +135,13 @@ public class SongifyCrudFasade {
         return genreUpdater.updateGenreById(genreId, newGenre);
     }
 
-    public SongDto updatePartiallyById(Long id, SongRequestDto songFromRequest) {
+    public void updatePartiallyById(Long id, SongRequestDto songFromRequest) {
         songRetriever.existById(id);
         SongEntity songFromDatabase = songRetriever.findSongById(id);
-        SongEntity toSave = SongDomainMapper.mapFromPartiallyUpdateSongRequestDtoToSong(
-                new PartiallyUpdateSongRequestDto(songFromRequest.name())
-        );
-        if (songFromRequest.name() != null) {
-            toSave.setName(songFromRequest.name());
-        } else {
-            toSave.setName(songFromDatabase.getName());
-        }
-        songUpdater.updateById(id, toSave);
-        return SongDto.builder()
-                .id(toSave.getId())
-                .name(toSave.getName())
+        songUpdater.updatePartiallyById(songFromRequest, songFromDatabase);
+        SongDto.builder()
+                .id(songFromDatabase.getId())
+                .name(songFromDatabase.getName())
                 .build();
     }
 
