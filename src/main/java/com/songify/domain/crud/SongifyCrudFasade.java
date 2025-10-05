@@ -95,7 +95,7 @@ public class SongifyCrudFasade {
         songDeleter.deleteById(id);
     }
 
-    public void deleteAlbumById(Long albumId){
+    public void deleteAlbumById(Long albumId) {
         AlbumDtoWithSongs album = albumRetriever.findAlbumByIdWithSongs(albumId);
         if (!album.songs().isEmpty()) {
             throw new AlbumNotEmptyException("Album with id: " + albumId + " contains songs and cannot be deleted");
@@ -111,12 +111,16 @@ public class SongifyCrudFasade {
         artistAssigner.addArtistToAlbum(artistId, albumId);
     }
 
-    public void addSongToArtist(Long songId, Long artistId){
-        songAssigner.addSongToArtist(songId,artistId);
+    public void addSongToArtist(Long songId, Long artistId) {
+        songAssigner.addSongToArtist(songId, artistId);
     }
 
-    public void addSongToAlbum(Long songId, Long albumId){
-        songAssigner.addSongToAlbum(songId,albumId);
+    public void addSongToAlbum(Long songId, Long albumId) {
+        songAssigner.addSongToAlbum(songId, albumId);
+    }
+
+    public void addSongToGenre(Long songId, Long genreId) {
+        songAssigner.addGenreToSong(songId, genreId);
     }
 
     public ArtistDto addArtistWithDefaultAlbumAndSing(ArtistRequestDto dto) {

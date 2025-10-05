@@ -5,6 +5,7 @@ import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToAlbumResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToArtistResponseDto;
+import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToGenreResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.DeleteSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetAllSongsResponseDto;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createAddSongToArtistResponse;
+import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createAddSongToGenreResponse;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createSongResponse;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToDeleteSongResponseDto;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToGetAllSongsResponseDto;
@@ -83,6 +85,13 @@ public class SongsController {
     public ResponseEntity<AddSongToAlbumResponseDto> addSongToAlbum(@PathVariable Long songId, @PathVariable Long albumId) {
         songFasade.addSongToAlbum(songId, albumId);
         AddSongToAlbumResponseDto body = new AddSongToAlbumResponseDto("Assigned song with id: " + songId + " to album with id: " + albumId, HttpStatus.OK);
+        return ResponseEntity.ok(body);
+    }
+
+    @PutMapping("/{songId}/genre/{genreId}")
+    public ResponseEntity<AddSongToGenreResponseDto> addSongToGenre(@PathVariable Long songId, @PathVariable Long genreId) {
+        songFasade.addSongToGenre(songId, genreId);
+        AddSongToGenreResponseDto body = createAddSongToGenreResponse(songId, genreId);
         return ResponseEntity.ok(body);
     }
 //    @PutMapping("/{id}")

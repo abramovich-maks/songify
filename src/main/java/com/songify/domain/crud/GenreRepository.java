@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,4 +21,6 @@ interface GenreRepository extends Repository<Genre, Long> {
     where g.id = :id
 """)
     Optional<Genre> findByIdWithSongsAndArtists(Long id);
+
+    Optional<Genre> findById(Long id);
 }

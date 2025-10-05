@@ -44,4 +44,9 @@ class GenreRetriever {
 
         return new GenreDtoWithSongsAndArtist(genreDto, songDtos);
     }
+
+    Genre findById(final Long genreId) {
+        return genreRepository.findById(genreId)
+                .orElseThrow(() -> new GenreNotFoundExceptions("Genre with id: " + genreId + " not found"));
+    }
 }

@@ -6,6 +6,7 @@ import com.songify.infrastructure.crud.song.controller.dto.request.CreateSongReq
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToArtistResponseDto;
+import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToGenreResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.DeleteSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetAllSongsResponseDto;
@@ -71,5 +72,9 @@ public class SongControllerMapper {
 
     public static AddSongToArtistResponseDto createAddSongToArtistResponse(final Long songId, final Long artistId) {
         return new AddSongToArtistResponseDto("Assigned song with id: " + songId + " to artist with id: " + artistId, HttpStatus.OK);
+    }
+
+    public static AddSongToGenreResponseDto createAddSongToGenreResponse(final Long songId, final Long genreId) {
+        return new AddSongToGenreResponseDto("For the song with id: " + songId + " the genre was changed to id: " + genreId, HttpStatus.OK);
     }
 }
