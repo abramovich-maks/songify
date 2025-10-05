@@ -5,6 +5,7 @@ import com.songify.domain.crud.dto.SongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.CreateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongRequestDto;
+import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToArtistResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.DeleteSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetAllSongsResponseDto;
@@ -66,5 +67,9 @@ public class SongControllerMapper {
                 .id(song.id())
                 .name(song.name())
                 .build();
+    }
+
+    public static AddSongToArtistResponseDto createAddSongToArtistResponse(final Long songId, final Long artistId) {
+        return new AddSongToArtistResponseDto("Assigned song with id: " + songId + " to artist with id: " + artistId, HttpStatus.OK);
     }
 }

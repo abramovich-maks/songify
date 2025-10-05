@@ -30,6 +30,7 @@ public class SongifyCrudFasade {
     private final SongRetriever songRetriever;
     private final SongDeleter songDeleter;
     private final SongUpdater songUpdater;
+    private final SongAssigner songAssigner;
     private final GenreAdder genreAdder;
     private final GenreRetriever genreRetriever;
     private final AlbumAdder albumAdder;
@@ -108,6 +109,10 @@ public class SongifyCrudFasade {
 
     public void addArtistToAlbum(Long artistId, Long albumId) {
         artistAssigner.addArtistToAlbum(artistId, albumId);
+    }
+
+    public void addSongToArtist(Long songId, Long artistId){
+        songAssigner.addSongToArtist(songId,artistId);
     }
 
     public ArtistDto addArtistWithDefaultAlbumAndSing(ArtistRequestDto dto) {

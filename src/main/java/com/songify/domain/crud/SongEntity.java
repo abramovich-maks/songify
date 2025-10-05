@@ -73,4 +73,9 @@ class SongEntity extends BaseEntity {
         this.duration = duration;
         this.language = language;
     }
+
+    void addArtist(final Artist artist) {
+        artists.add(artist);
+        artist.addSong(this);
+    }
 }

@@ -52,4 +52,8 @@ class Artist extends BaseEntity {
         albums.add(album);
         album.addArtist(this);
     }
+
+    void addSong(final SongEntity songEntity) {
+        songs.add(songEntity);
+    }
 }
