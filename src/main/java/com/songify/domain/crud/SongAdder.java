@@ -1,5 +1,6 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.SongDefaultRequestDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongLanguageDto;
 import com.songify.domain.crud.dto.SongRequestDto;
@@ -13,17 +14,36 @@ import org.springframework.stereotype.Service;
 class SongAdder {
 
     private final SongRepository songRepository;
+    private final GenreRetriever genreRetriever;
+    private final ArtistRetriever artistRetriever;
+    private final AlbumRetriever albumRetriever;
 
     SongDto addSong(final SongRequestDto songDto) {
         SongLanguageDto language = songDto.language();
         SongLanguage songLanguage = SongLanguage.valueOf(language.name());
         SongEntity songEntity = new SongEntity(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);
+        if (songDto.genreId() != null) {
+            Genre genre = genreRetriever.findById(songDto.genreId());
+            songEntity.setGenre(genre);
+        }
+        // artists
+        if (songDto.artistIds() != null) {
+            for (Long artistId : songDto.artistIds()) {
+                Artist artist = artistRetriever.findById(artistId);
+                songEntity.addArtist(artist);
+            }
+        }
+        // album
+        if (songDto.albumId() != null) {
+            Album album = albumRetriever.findById(songDto.albumId());
+            songEntity.addAlbum(album);
+        }
         log.info("added new songDto: {}", songDto);
         SongEntity save = songRepository.save(songEntity);
         return new SongDto(save.getId(), save.getName());
     }
 
-    SongEntity addDefaultSong(final SongRequestDto songDto) {
+    SongEntity addDefaultSong(final SongDefaultRequestDto songDto) {
         SongLanguageDto language = songDto.language();
         SongLanguage songLanguage = SongLanguage.valueOf(language.name());
         SongEntity songEntity = new SongEntity(songDto.name(), songDto.releaseDate(), songDto.duration(), songLanguage);

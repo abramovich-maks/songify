@@ -6,13 +6,10 @@ import java.time.Instant;
 import java.util.Set;
 
 @Builder
-public record SongRequestDto(
+public record SongDefaultRequestDto(
         String name,
         Instant releaseDate,
         Long duration,
-        SongLanguageDto language,
-        Long genreId,
-        Set<Long> artistIds,
-        Long albumId
+        SongLanguageDto language
 ) {
 }

@@ -5,7 +5,7 @@
 1. ~~Można dodać artystę (nazwa artysty)~~
 2. ~~Można dodać gatunek muzyczny (nazwa gatunku)~~
 3. ~~Można dodać album (tytuł, data wydania, ale musi być w nim przynajmniej jedna piosenka)~~
-4. ~~Można dodać piosenkę (tytuł, czas trwania, data wydania, język piosenki)~~
+4. ~~Można dodać piosenkę (tytuł, czas trwania, data wydania, język piosenki)~~ + ~~od razu dodawać genre, artiste, album (albo zostawic na pozniej)~~
 5. ~~Można dodać artystę od razu z albumem i z piosenką (domyślne wartości)~~
 6. ~~Można usunąć artystę (usuwamy wtedy jego piosenki oraz albumy, ale jeśli było więcej niż jeden artysta w albumie, to usuwamy tylko artystę z albumu i samego artystę)~~
 7. Można usunąć gatunek muzyczny (ale nie może istnieć piosenka z takim gatunkiem)

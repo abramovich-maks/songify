@@ -2,6 +2,7 @@ package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
+import com.songify.domain.crud.dto.SongDefaultRequestDto;
 import com.songify.domain.crud.dto.SongLanguageDto;
 import com.songify.domain.crud.dto.SongRequestDto;
 import lombok.AllArgsConstructor;
@@ -48,7 +49,7 @@ class ArtistAdder {
     }
 
     private SongEntity createDefaultSong() {
-        return songAdder.addDefaultSong(new SongRequestDto(
+        return songAdder.addDefaultSong(new SongDefaultRequestDto(
                 "default-song-name: " + UUID.randomUUID(),
                 LocalDateTime.now().toInstant(ZoneOffset.UTC),
                 0L,

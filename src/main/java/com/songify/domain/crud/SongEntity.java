@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -57,7 +58,7 @@ class SongEntity extends BaseEntity {
     private Genre genre;
 
     @ManyToMany
-    private Set<Artist> artists;
+    private Set<Artist> artists = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private SongLanguage language;
