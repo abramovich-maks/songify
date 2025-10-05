@@ -21,18 +21,6 @@ import java.util.stream.Collectors;
 
 public class SongControllerMapper {
 
-    public static SongDto fromCreateRequest(CreateSongRequestDto req) {
-        return new SongDto(null, req.song());
-    }
-
-    public static SongDto fromUpdateRequest(UpdateSongRequestDto req) {
-        return new SongDto(null, req.song());
-    }
-
-    public static SongDto fromPartialRequest(PartiallyUpdateSongRequestDto req) {
-        return new SongDto(null, req.song());
-    }
-
     public static CreateSongResponseDto createSongResponse(SongDto song) {
         SongControllerResponseDto dto = mapFromSongToSongDto(song);
         return new CreateSongResponseDto(dto);
@@ -67,6 +55,7 @@ public class SongControllerMapper {
         return SongControllerResponseDto.builder()
                 .id(song.id())
                 .name(song.name())
+                .genre(song.genreName())
                 .build();
     }
 

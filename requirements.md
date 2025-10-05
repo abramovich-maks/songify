@@ -19,7 +19,7 @@
 15. ~~Można przypisać piosenki do artysty (poprzez song)~~
 16. ~~Można przypisać artystów do albumów (album może mieć więcej artystów, artysta może mieć kilka albumów)~~ 
 17. ~~Można przypisać tylko jeden gatunek muzyczny do piosenki (poprzez song)~~ 
-18. Gdy nie ma przypisanego gatunku muzycznego do piosenki, to wyświetlamy "default"
+18. ~~Gdy nie ma przypisanego gatunku muzycznego do piosenki, to wyświetlamy "default"~~
 19. ~~Można wyświetlać wszystkie piosenki~~
 20. ~~Można wyświetlać wszystkie gatunki~~
 21. ~~Można wyświetlać wszystkich artystów~~

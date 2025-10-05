@@ -29,7 +29,7 @@ class AlbumRetriever {
                 .collect(Collectors.toSet());
 
         Set<SongDto> songDto = album.getSongs().stream()
-                .map(song -> new SongDto(song.getId(), song.getName()))
+                .map(song -> new SongDto(song.getId(), song.getName(), song.getGenre().getName()))
                 .collect(Collectors.toSet());
 
         return new AlbumDtoWithArtistAndSongs(albumDto, artistDto, songDto);
@@ -56,7 +56,7 @@ class AlbumRetriever {
                 .orElseThrow(() -> new AlbumNotFoundException("Album with id: " + id + " not found"));
 
         Set<SongDto> songDto = album.getSongs().stream()
-                .map(song -> new SongDto(song.getId(), song.getName()))
+                .map(song -> new SongDto(song.getId(), song.getName(), song.getGenre().getName()))
                 .collect(Collectors.toSet());
 
         return new AlbumDtoWithSongs(songDto);

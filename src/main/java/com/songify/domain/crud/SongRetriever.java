@@ -23,6 +23,7 @@ class SongRetriever {
                 .stream().map(song -> SongDto.builder()
                         .id(song.getId())
                         .name(song.getName())
+                        .genreName(song.getGenre() == null ? "default" : song.getGenre().getName())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -32,6 +33,7 @@ class SongRetriever {
                 .map(song -> SongDto.builder()
                         .id(song.getId())
                         .name(song.getName())
+                        .genreName(song.getGenre() == null ? "default" : song.getGenre().getName())
                         .build())
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
     }

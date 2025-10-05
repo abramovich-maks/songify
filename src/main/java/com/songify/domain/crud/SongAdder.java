@@ -26,21 +26,20 @@ class SongAdder {
             Genre genre = genreRetriever.findById(songDto.genreId());
             songEntity.setGenre(genre);
         }
-        // artists
         if (songDto.artistIds() != null) {
             for (Long artistId : songDto.artistIds()) {
                 Artist artist = artistRetriever.findById(artistId);
                 songEntity.addArtist(artist);
             }
         }
-        // album
         if (songDto.albumId() != null) {
             Album album = albumRetriever.findById(songDto.albumId());
             songEntity.addAlbum(album);
         }
         log.info("added new songDto: {}", songDto);
         SongEntity save = songRepository.save(songEntity);
-        return new SongDto(save.getId(), save.getName());
+        String genreName = save.getGenre() != null ? save.getGenre().getName() : null;
+        return new SongDto(save.getId(), save.getName(), genreName);
     }
 
     SongEntity addDefaultSong(final SongDefaultRequestDto songDto) {
