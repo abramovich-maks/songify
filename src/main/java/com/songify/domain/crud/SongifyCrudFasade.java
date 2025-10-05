@@ -115,6 +115,10 @@ public class SongifyCrudFasade {
         songAssigner.addSongToArtist(songId,artistId);
     }
 
+    public void addSongToAlbum(Long songId, Long albumId){
+        songAssigner.addSongToAlbum(songId,albumId);
+    }
+
     public ArtistDto addArtistWithDefaultAlbumAndSing(ArtistRequestDto dto) {
         return artistAdder.addArtistWithDefaultAlbumAndSong(dto);
     }

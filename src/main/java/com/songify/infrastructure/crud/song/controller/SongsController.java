@@ -3,6 +3,7 @@ package com.songify.infrastructure.crud.song.controller;
 import com.songify.domain.crud.SongifyCrudFasade;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
+import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToAlbumResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToArtistResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.DeleteSongResponseDto;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,10 +72,17 @@ public class SongsController {
         return ResponseEntity.ok(body);
     }
 
-    @PutMapping("/{songId}/{artistId}")
+    @PutMapping("/{songId}/artist/{artistId}")
     public ResponseEntity<AddSongToArtistResponseDto> addSongToArtist(@PathVariable Long songId, @PathVariable Long artistId) {
         songFasade.addSongToArtist(songId, artistId);
         AddSongToArtistResponseDto body = createAddSongToArtistResponse(songId, artistId);
+        return ResponseEntity.ok(body);
+    }
+
+    @PutMapping("/{songId}/album/{albumId}")
+    public ResponseEntity<AddSongToAlbumResponseDto> addSongToAlbum(@PathVariable Long songId, @PathVariable Long albumId) {
+        songFasade.addSongToAlbum(songId, albumId);
+        AddSongToAlbumResponseDto body = new AddSongToAlbumResponseDto("Assigned song with id: " + songId + " to album with id: " + albumId, HttpStatus.OK);
         return ResponseEntity.ok(body);
     }
 //    @PutMapping("/{id}")

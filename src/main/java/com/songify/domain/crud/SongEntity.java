@@ -10,9 +10,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -77,5 +77,9 @@ class SongEntity extends BaseEntity {
     void addArtist(final Artist artist) {
         artists.add(artist);
         artist.addSong(this);
+    }
+
+    void addAlbum(final Album album) {
+        album.getSongs().add(this);
     }
 }
