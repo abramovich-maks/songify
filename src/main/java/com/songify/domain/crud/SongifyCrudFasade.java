@@ -9,6 +9,7 @@ import com.songify.domain.crud.dto.ArtistWithAlbumDto;
 import com.songify.domain.crud.dto.GenreDto;
 import com.songify.domain.crud.dto.GenreDtoWithSongsAndArtist;
 import com.songify.domain.crud.dto.GenreRequestDto;
+import com.songify.domain.crud.dto.GetSongDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongRequestDto;
@@ -78,7 +79,7 @@ public class SongifyCrudFasade {
         return genreRetriever.findGenreByIdWithAllSongsAndArtist(id);
     }
 
-    public SongDto findSongDtoById(Long id) {
+    public GetSongDto findSongDtoById(Long id) {
         return songRetriever.findSongDtoById(id);
     }
 

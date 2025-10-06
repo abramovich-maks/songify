@@ -1,5 +1,6 @@
 package com.songify.infrastructure.crud.song.controller;
 
+import com.songify.domain.crud.dto.GetSongDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
@@ -31,9 +32,8 @@ public class SongControllerMapper {
         return new GetAllSongsResponseDto(dtos);
     }
 
-    public static GetSongResponseDto mapFromSongToGetSongResponseDto(SongDto song) {
-        SongControllerResponseDto dto = mapFromSongToSongDto(song);
-        return new GetSongResponseDto(dto);
+    public static GetSongResponseDto mapFromGetSongDtoToGetSongResponseDto(final GetSongDto song) {
+        return new GetSongResponseDto(song.id(), song.name(), song.artist(), song.genre());
     }
 
     public static DeleteSongResponseDto mapFromSongToDeleteSongResponseDto(Long id) {

@@ -1,4 +1,7 @@
 package com.songify.infrastructure.crud.song.controller.dto.response;
 
-public record GetSongResponseDto(SongControllerResponseDto song) {
+import java.util.List;
+
+public record
+GetSongResponseDto(Long id, String name, List<String> artist, String genre) {
 }

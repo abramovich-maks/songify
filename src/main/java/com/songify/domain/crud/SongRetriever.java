@@ -1,5 +1,6 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.GetSongDto;
 import com.songify.domain.crud.dto.SongDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +29,18 @@ class SongRetriever {
                 .collect(Collectors.toList());
     }
 
-    SongDto findSongDtoById(Long id) {
+    GetSongDto findSongDtoById(Long id) {
         return songRepository.findById(id)
-                .map(song -> SongDto.builder()
+                .map(song -> GetSongDto.builder()
                         .id(song.getId())
                         .name(song.getName())
-                        .genreName(song.getGenre() == null ? "default" : song.getGenre().getName())
+                        .artist(song.getArtists().stream().map(Artist::getName).toList())
+                        .genre(song.getGenre() == null ? "default" : song.getGenre().getName())
                         .build())
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
     }
 
-    SongEntity findSongById(Long id){
+    SongEntity findSongById(Long id) {
         return songRepository.findById(id)
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
     }

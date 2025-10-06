@@ -1,6 +1,7 @@
 package com.songify.infrastructure.crud.song.controller;
 
 import com.songify.domain.crud.SongifyCrudFasade;
+import com.songify.domain.crud.dto.GetSongDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
@@ -12,7 +13,6 @@ import com.songify.infrastructure.crud.song.controller.dto.response.DeleteSongRe
 import com.songify.infrastructure.crud.song.controller.dto.response.GetAllSongsResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.GetSongResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.PartiallyUpdateSongResponseDto;
-import com.songify.infrastructure.crud.song.controller.dto.response.SongControllerResponseDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,10 +37,10 @@ import static com.songify.infrastructure.crud.song.controller.SongControllerMapp
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createAddSongToGenreResponse;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createPartiallyUpdatedSongResponse;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.createSongResponse;
+import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromGetSongDtoToGetSongResponseDto;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromPartiallyUpdateSongRequestDtoToSongRequestDto;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToDeleteSongResponseDto;
 import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToGetAllSongsResponseDto;
-import static com.songify.infrastructure.crud.song.controller.SongControllerMapper.mapFromSongToGetSongResponseDto;
 
 @RestController
 @Log4j2
@@ -59,9 +59,8 @@ public class SongsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetSongResponseDto> getSongsById(@PathVariable Long id, @RequestHeader(required = false) String requestId) {
-        log.info(requestId);
-        SongDto songEntity = songFasade.findSongDtoById(id);
-        GetSongResponseDto response = mapFromSongToGetSongResponseDto(songEntity);
+        GetSongDto song = songFasade.findSongDtoById(id);
+        GetSongResponseDto response = mapFromGetSongDtoToGetSongResponseDto(song);
         return ResponseEntity.ok(response);
     }
 
@@ -100,7 +99,8 @@ public class SongsController {
         AddSongToGenreResponseDto body = createAddSongToGenreResponse(songId, genreId);
         return ResponseEntity.ok(body);
     }
-//    @PutMapping("/{id}")
+
+    //    @PutMapping("/{id}")
 //    public ResponseEntity<UpdateSongResponseDto> update(@PathVariable Long id, @RequestBody @Valid UpdateSongRequestDto request) {
 //        SongDto newSong = SongControllerMapper.fromUpdateRequest(request);
 //        songFasade.updateById(id, newSong);
