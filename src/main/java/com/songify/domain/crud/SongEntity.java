@@ -99,4 +99,8 @@ class SongEntity extends BaseEntity {
     void addGenre(final Genre genre) {
         genre.getSongs().add(this);
     }
+
+    void deleteAlbum(final Album album) {
+        album.getSongs().remove(this);
+    }
 }

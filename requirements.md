@@ -13,7 +13,7 @@
 9. ~~Można usunąć piosenkę, ale nie usuwamy albumu i artystów gdy była tylko 1 piosenka w albumie~~
 10. ~~Można edytować nazwę artysty~~
 11. ~~Można edytować nazwę gatunku muzycznego~~
-12. Można edytować album (dodawać piosenki, artystów, zmieniać nazwę albumu)
+12. ~~Można edytować album (dodawać/usuwać piosenki, artystów, zmieniać nazwę albumu)~~ 
 13. ~~Można edytować piosenkę (nazwe piosenki, date wydania, długość piosenki w sekundach, język piosenki, id gatunku muzycznego, id artysty, id albumu)~~
 14. ~~Można przypisać piosenki do albumów (poprzez song)~~
 15. ~~Można przypisać piosenki do artysty (poprzez song)~~
@@ -27,7 +27,7 @@
 23. ~~Można wyświetlać konkretne albumy z artystami oraz piosenkami w albumie~~
 24. ~~Można wyświetlać konkretne gatunki muzyczne wraz z piosenkami i artystami~~
 25. ~~Można wyświetlać konkretnych artystów wraz z ich albumami~~
-26. Chcemy mieć trwałe dane
+26. ~~Chcemy mieć trwałe dane~~
 
 
 # HAPPY PATH:

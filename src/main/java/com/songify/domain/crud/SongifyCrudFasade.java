@@ -12,7 +12,6 @@ import com.songify.domain.crud.dto.GenreRequestDto;
 import com.songify.domain.crud.dto.GetSongDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
-import com.songify.infrastructure.crud.song.controller.dto.request.UpdateSongRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +36,7 @@ public class SongifyCrudFasade {
     private final AlbumAdder albumAdder;
     private final AlbumRetriever albumRetriever;
     private final AlbumDeleter albumDeleter;
+    private final AlbumUpdater albumUpdater;
     private final ArtistAdder artistAdder;
     private final ArtistRetriever artistRetriever;
     private final ArtisDeleter artisDeleter;
@@ -146,11 +146,24 @@ public class SongifyCrudFasade {
                 .build();
     }
 
-    public void updateById(Long id, SongRequestDto newSongDto) {
-        songRetriever.existById(id);
-        SongEntity entityToUpdate = SongDomainMapper.mapFromUpdateSongRequestDtoToSong(
-                new UpdateSongRequestDto(newSongDto.name())
-        );
-        songUpdater.updateById(id, entityToUpdate);
+    public void addSongToAlbumById(Long albumId, Long songId) {
+        albumUpdater.addSongToAlbumById(albumId, songId);
+    }
+
+    public void deleteSongFromAlbumById(Long albumId, Long songId) {
+        albumUpdater.deleteSongFromAlbumById(albumId, songId);
+    }
+
+    public void addArtistToAlbumById(Long albumId, Long artistId) {
+        albumUpdater.addArtistToAlbumById(albumId, artistId);
+    }
+
+    public void deleteArtistFromAlbumById(Long albumId, Long artistId) {
+        albumUpdater.deleteArtistFromAlbumById(albumId, artistId);
+
+    }
+
+    public void updateAlbumNameOrReleaseById(Long albumId, UpdateAlbumRequestDto dto) {
+        albumUpdater.updateAlbumNameOrReleaseById(albumId, dto);
     }
 }

@@ -2,5 +2,5 @@ package com.songify.infrastructure.crud.song.controller.dto.response;
 
 import org.springframework.http.HttpStatus;
 
-public record AddSongToAlbumResponseDto(String message, HttpStatus status) {
+public record ActionResponseDto(String message, HttpStatus status) {
 }

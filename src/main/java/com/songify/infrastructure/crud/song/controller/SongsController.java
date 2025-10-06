@@ -5,7 +5,7 @@ import com.songify.domain.crud.dto.GetSongDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
 import com.songify.infrastructure.crud.song.controller.dto.request.PartiallyUpdateSongRequestDto;
-import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToAlbumResponseDto;
+import com.songify.infrastructure.crud.song.controller.dto.response.ActionResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToArtistResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.AddSongToGenreResponseDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.CreateSongResponseDto;
@@ -87,9 +87,9 @@ public class SongsController {
     }
 
     @PutMapping("/{songId}/album/{albumId}")
-    public ResponseEntity<AddSongToAlbumResponseDto> addSongToAlbum(@PathVariable Long songId, @PathVariable Long albumId) {
+    public ResponseEntity<ActionResponseDto> addSongToAlbum(@PathVariable Long songId, @PathVariable Long albumId) {
         songFasade.addSongToAlbum(songId, albumId);
-        AddSongToAlbumResponseDto body = new AddSongToAlbumResponseDto("Assigned song with id: " + songId + " to album with id: " + albumId, HttpStatus.OK);
+        ActionResponseDto body = new ActionResponseDto("Assigned song with id: " + songId + " to album with id: " + albumId, HttpStatus.OK);
         return ResponseEntity.ok(body);
     }
 
