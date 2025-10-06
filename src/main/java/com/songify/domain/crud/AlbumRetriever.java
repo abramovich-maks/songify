@@ -29,7 +29,10 @@ class AlbumRetriever {
                 .collect(Collectors.toSet());
 
         Set<SongDto> songDto = album.getSongs().stream()
-                .map(song -> new SongDto(song.getId(), song.getName(), song.getGenre().getName()))
+                .map(song -> {
+                    String genreName = song.getGenre() != null ? song.getGenre().getName() : "default";
+                    return new SongDto(song.getId(), song.getName(), genreName);
+                })
                 .collect(Collectors.toSet());
 
         return new AlbumDtoWithArtistAndSongs(albumDto, artistDto, songDto);
