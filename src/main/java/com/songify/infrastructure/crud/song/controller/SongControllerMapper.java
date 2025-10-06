@@ -33,7 +33,7 @@ public class SongControllerMapper {
     }
 
     public static GetSongResponseDto mapFromGetSongDtoToGetSongResponseDto(final GetSongDto song) {
-        return new GetSongResponseDto(song.id(), song.name(), song.artist(), song.genre());
+        return new GetSongResponseDto(song.id(), song.name(), song.artists(), song.genre(), song.album(), song.releaseDate(), song.language());
     }
 
     public static DeleteSongResponseDto mapFromSongToDeleteSongResponseDto(Long id) {

@@ -31,12 +31,17 @@ class SongRetriever {
 
     GetSongDto findSongDtoById(Long id) {
         return songRepository.findById(id)
-                .map(song -> GetSongDto.builder()
-                        .id(song.getId())
-                        .name(song.getName())
-                        .artist(song.getArtists().stream().map(Artist::getName).toList())
-                        .genre(song.getGenre() == null ? "default" : song.getGenre().getName())
-                        .build())
+                .map(song -> {
+                    return GetSongDto.builder()
+                            .id(song.getId())
+                            .name(song.getName())
+                            .artists((song.getArtists() == null || song.getArtists().isEmpty()) ? List.of("Nieznany artysta") : song.getArtists().stream().map(Artist::getName).toList())
+                            .genre(song.getGenre() == null ? "default" : song.getGenre().getName())
+                            .album(song.getAlbum() == null ? "Brak albumu" : song.getAlbum().getTitle())
+                            .releaseDate(song.getReleaseDate())
+                            .language(song.getLanguage().name())
+                            .build();
+                })
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
     }
 
