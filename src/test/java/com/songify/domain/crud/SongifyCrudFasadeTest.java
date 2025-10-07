@@ -2,6 +2,7 @@ package com.songify.domain.crud;
 
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -17,20 +18,22 @@ class SongifyCrudFasadeTest {
     );
 
     @Test
-    public void first() {
+    @DisplayName("Should add artist 'ArtistName' with id:0 When 'ArtistName' was sent ")
+    public void should_add_artist_artistname_with_id_zero_when_artistname_was_sent() {
         // given
         ArtistRequestDto addArtist = ArtistRequestDto.builder()
-                .name("new Test artist")
+                .name("ArtistName")
                 .build();
         // when
         ArtistDto response = songifyCrudFasade.addArtist(addArtist);
         // then
         assertThat(response.id()).isEqualTo(0L);
-        assertThat(response.name()).isEqualTo("new Test artist");
+        assertThat(response.name()).isEqualTo("ArtistName");
     }
 
     @Test
-    public void first_wariant_B() {
+    @DisplayName("Should add artist 'amigo' with id:0 When 'amigo' was sent ")
+    public void should_add_artist_amigo_with_id_zero_when_amigo_was_sent() {
         // given
         ArtistRequestDto addArtist = ArtistRequestDto.builder()
                 .name("amigo")
@@ -38,7 +41,7 @@ class SongifyCrudFasadeTest {
         // when
         ArtistDto response = songifyCrudFasade.addArtist(addArtist);
         // then
-        assertThat(response.id()).isEqualTo(70L);
+        assertThat(response.id()).isEqualTo(0L);
         assertThat(response.name()).isEqualTo("amigo");
     }
 }
