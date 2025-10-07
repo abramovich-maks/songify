@@ -18,22 +18,26 @@ class SongifyCrudFasadeTest {
 
     @Test
     public void first() {
+        // given
         ArtistRequestDto addArtist = ArtistRequestDto.builder()
                 .name("new Test artist")
                 .build();
+        // when
         ArtistDto response = songifyCrudFasade.addArtist(addArtist);
-
+        // then
         assertThat(response.id()).isEqualTo(0L);
         assertThat(response.name()).isEqualTo("new Test artist");
     }
 
     @Test
     public void first_wariant_B() {
+        // given
         ArtistRequestDto addArtist = ArtistRequestDto.builder()
                 .name("amigo")
                 .build();
+        // when
         ArtistDto response = songifyCrudFasade.addArtist(addArtist);
-
+        // then
         assertThat(response.id()).isEqualTo(70L);
         assertThat(response.name()).isEqualTo("amigo");
     }
