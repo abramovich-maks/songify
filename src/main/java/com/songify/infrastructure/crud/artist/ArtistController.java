@@ -1,9 +1,11 @@
 package com.songify.infrastructure.crud.artist;
 
 import com.songify.domain.crud.SongifyCrudFasade;
+import com.songify.domain.crud.dto.AlbumDto;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
 import com.songify.domain.crud.dto.ArtistWithAlbumDto;
+import com.songify.infrastructure.crud.album.AllAlbumsDtoResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 import static com.songify.infrastructure.crud.artist.ArtistControllerMapper.getAddArtistToAlbumResponseDto;
 import static com.songify.infrastructure.crud.artist.ArtistControllerMapper.getDeleteArtistResponseDto;
+import static com.songify.infrastructure.crud.artist.ArtistControllerMapper.mapFromAlbumDtoToAllAlbumsDtoResponse;
 
 @RestController
 @AllArgsConstructor
@@ -54,6 +58,13 @@ class ArtistController {
     public ResponseEntity<ArtistWithAlbumDto> findArtistByIdWithAlbum(@PathVariable Long artistId) {
         ArtistWithAlbumDto artistByIdWithAlbum = songifyCrudFasade.findArtistByIdWithAlbum(artistId);
         return ResponseEntity.ok(artistByIdWithAlbum);
+    }
+
+    @GetMapping("/{artistId}/albums")
+    public ResponseEntity<AllAlbumsDtoResponse> getAllAlbumsByArtistId(@PathVariable Long artistId) {
+        List<AlbumDto> allAlbums = songifyCrudFasade.getAlbumsByArtistId(artistId);
+        AllAlbumsDtoResponse albumResponse = mapFromAlbumDtoToAllAlbumsDtoResponse(allAlbums);
+        return ResponseEntity.ok(albumResponse);
     }
 
     @DeleteMapping("/{artistId}")

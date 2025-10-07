@@ -64,4 +64,10 @@ class AlbumRetriever {
 
         return new AlbumDtoWithSongs(songDto);
     }
+
+    List<AlbumDto> getAlbumsByArtistId(final Long artistId) {
+        return albumRepository.findAllAlbumsByArtistId(artistId).stream()
+                .map(album -> new AlbumDto(album.getId(), album.getTitle()))
+                .collect(Collectors.toList());
+    }
 }

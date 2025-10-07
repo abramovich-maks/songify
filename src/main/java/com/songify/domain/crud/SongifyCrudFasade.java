@@ -155,4 +155,8 @@ public class SongifyCrudFasade {
     public void updateAlbumNameOrReleaseById(Long albumId, UpdateAlbumRequestDto dto) {
         albumUpdater.updateAlbumNameOrReleaseById(albumId, dto);
     }
+
+    public List<AlbumDto> getAlbumsByArtistId(Long artistId) {
+        return albumRetriever.getAlbumsByArtistId(artistId);
+    }
 }
