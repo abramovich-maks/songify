@@ -4,6 +4,8 @@ import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 class SongifyCrudFasadeTest {
 
 
@@ -21,8 +23,8 @@ class SongifyCrudFasadeTest {
                 .build();
         ArtistDto response = songifyCrudFasade.addArtist(addArtist);
 
-        assert  response.id().equals(0L);
-        assert  response.name().equals("new Test artist");
+        assertThat(response.id()).isEqualTo(0L);
+        assertThat(response.name()).isEqualTo("new Test artist");
     }
 
     @Test
@@ -32,7 +34,7 @@ class SongifyCrudFasadeTest {
                 .build();
         ArtistDto response = songifyCrudFasade.addArtist(addArtist);
 
-        assert  response.id().equals(0L);
-        assert  response.name().equals("amigo");
+        assertThat(response.id()).isEqualTo(70L);
+        assertThat(response.name()).isEqualTo("amigo");
     }
 }
