@@ -15,8 +15,10 @@ import java.util.Set;
 class SongDeleter {
 
     private final SongRepository songRepository;
+    private final SongRetriever songRetriever;
 
     void deleteById(Long id) {
+        songRetriever.existById(id);
         songRepository.deleteById(id);
         log.info("Deleted song by id: {}", id);
     }

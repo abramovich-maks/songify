@@ -92,15 +92,10 @@ public class SongifyCrudFasade {
     }
 
     public void deleteSongById(Long id) {
-        songRetriever.existById(id);
         songDeleter.deleteById(id);
     }
 
     public void deleteAlbumById(Long albumId) {
-        AlbumDtoWithSongs album = albumRetriever.findAlbumByIdWithSongs(albumId);
-        if (!album.songs().isEmpty()) {
-            throw new AlbumNotEmptyException("Album with id: " + albumId + " contains songs and cannot be deleted");
-        }
         albumDeleter.deleteById(albumId);
     }
 
@@ -137,13 +132,7 @@ public class SongifyCrudFasade {
     }
 
     public void updatePartiallyById(Long id, SongRequestDto songFromRequest) {
-        songRetriever.existById(id);
-        SongEntity songFromDatabase = songRetriever.findSongById(id);
-        songUpdater.updatePartiallyById(songFromRequest, songFromDatabase);
-        SongDto.builder()
-                .id(songFromDatabase.getId())
-                .name(songFromDatabase.getName())
-                .build();
+        songUpdater.updatePartiallyById(id, songFromRequest);
     }
 
     public void addSongToAlbumById(Long albumId, Long songId) {

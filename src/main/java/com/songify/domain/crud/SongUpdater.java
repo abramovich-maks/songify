@@ -25,7 +25,9 @@ class SongUpdater {
         songRepository.updateById(id, newSong);
     }
 
-    void updatePartiallyById(final SongRequestDto songFromRequest, final SongEntity songFromDatabase) {
+    void updatePartiallyById(final Long id, final SongRequestDto songFromRequest) {
+        songRetriever.existById(id);
+        SongEntity songFromDatabase = songRetriever.findSongById(id);
         if (songFromRequest.name() != null) {
             songFromDatabase.setName(songFromRequest.name());
             log.info("Song with id: {} updated name: \"{}\"", songFromDatabase.getId(), songFromRequest.name());
