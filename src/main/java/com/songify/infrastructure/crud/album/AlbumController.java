@@ -1,7 +1,7 @@
 package com.songify.infrastructure.crud.album;
 
 import com.songify.domain.crud.SongifyCrudFasade;
-import com.songify.domain.crud.UpdateAlbumRequestDto;
+import com.songify.domain.crud.dto.UpdateAlbumRequestDto;
 import com.songify.domain.crud.dto.AlbumDto;
 import com.songify.domain.crud.dto.AlbumDtoWithArtistAndSongs;
 import com.songify.domain.crud.dto.AlbumRequestDto;

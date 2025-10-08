@@ -1,6 +1,6 @@
 package com.songify.infrastructure.crud.album;
 
-import com.songify.domain.crud.UpdateAlbumRequestDto;
+import com.songify.domain.crud.dto.UpdateAlbumRequestDto;
 import com.songify.domain.crud.dto.AlbumDto;
 import com.songify.infrastructure.crud.song.controller.dto.response.ActionResponseDto;
 import org.springframework.http.HttpStatus;

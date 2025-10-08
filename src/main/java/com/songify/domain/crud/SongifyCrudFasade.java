@@ -12,6 +12,7 @@ import com.songify.domain.crud.dto.GenreRequestDto;
 import com.songify.domain.crud.dto.GetSongDto;
 import com.songify.domain.crud.dto.SongDto;
 import com.songify.domain.crud.dto.SongRequestDto;
+import com.songify.domain.crud.dto.UpdateAlbumRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
