@@ -159,4 +159,12 @@ public class SongifyCrudFasade {
     public List<AlbumDto> getAlbumsByArtistId(Long artistId) {
         return albumRetriever.getAlbumsByArtistId(artistId);
     }
+
+    int countArtistByAlbumId(final Long albumId) {
+        return albumRetriever.countArtistByAlbumId(albumId);
+    }
+
+    AlbumDto findAlbumById(final Long albumId) {
+       return albumRetriever.findDtoById(albumId);
+    }
 }
