@@ -49,4 +49,9 @@ class GenreRetriever {
         return genreRepository.findById(genreId)
                 .orElseThrow(() -> new GenreNotFoundExceptions("Genre with id: " + genreId + " not found"));
     }
+
+    GenreDto findGenreById(final Long genreId) {
+        Genre genre = findById(genreId);
+        return new GenreDto(genre.getId(), genre.getName());
+    }
 }

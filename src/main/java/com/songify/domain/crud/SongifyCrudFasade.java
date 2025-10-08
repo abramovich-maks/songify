@@ -165,6 +165,10 @@ public class SongifyCrudFasade {
     }
 
     AlbumDto findAlbumById(final Long albumId) {
-       return albumRetriever.findDtoById(albumId);
+        return albumRetriever.findDtoById(albumId);
+    }
+
+    GenreDto findGenreById(Long genreId) {
+        return genreRetriever.findGenreById(genreId);
     }
 }
