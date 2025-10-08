@@ -297,14 +297,16 @@ class SongifyCrudFasadeTest {
                 .name("song1")
                 .language(SongLanguageDto.DEFAULT)
                 .build();
+        assertThat(songifyCrudFasade.findAllSongs(Pageable.unpaged())).isEmpty();
         // when
         SongDto newSongDto = songifyCrudFasade.addSong(song);
         // then
         assertThat(newSongDto.genreName()).isEqualTo("default");
-        assertThat(songifyCrudFasade.findSongDtoById(newSongDto.id()).id()).isEqualTo(0);
+        assertThat(songifyCrudFasade.findAllSongs(Pageable.unpaged()))
+                .extracting(SongDto::id)
+                .containsExactly(0L);
     }
 
-    // TODO
     @Test
     public void should_add_album_with_song() {
         // given

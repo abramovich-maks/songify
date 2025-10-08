@@ -2,8 +2,10 @@ package com.songify.domain.crud;
 
 import org.springframework.data.domain.Pageable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,7 +17,7 @@ class InMemorySongRepository implements SongRepository {
 
     @Override
     public List<SongEntity> findAll(final Pageable pageable) {
-        return List.of();
+        return new ArrayList<>(db.values());
     }
 
     @Override
