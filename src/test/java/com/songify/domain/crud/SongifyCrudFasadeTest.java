@@ -300,6 +300,7 @@ class SongifyCrudFasadeTest {
         // when
         SongDto newSongDto = songifyCrudFasade.addSong(song);
         // then
+        assertThat(newSongDto.genreName()).isEqualTo("default");
         assertThat(songifyCrudFasade.findSongDtoById(newSongDto.id()).id()).isEqualTo(0);
     }
 
