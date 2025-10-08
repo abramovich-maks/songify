@@ -38,7 +38,7 @@ class SongAdder {
         }
         log.info("added new songDto: {}", songDto);
         SongEntity save = songRepository.save(songEntity);
-        String genreName = save.getGenre() != null ? save.getGenre().getName() : null;
+        String genreName = save.getGenre() != null ? save.getGenre().getName() : "default";
         return new SongDto(save.getId(), save.getName(), genreName);
     }
 
