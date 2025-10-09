@@ -183,8 +183,16 @@ class SongifyCrudFasadeTest {
         // when
         songifyCrudFasade.deleteArtistByIdWithAlbumsAndSongs(artistId2);
         // then
-        assertThat(songifyCrudFasade.findAllArtists(Pageable.unpaged())).size().isEqualTo(1);
-        assertThat(songifyCrudFasade.findArtistByIdWithAlbum(artistId1).artist().name()).isEqualTo(addArtist1.name());
+        AlbumDtoWithArtistAndSongs album = songifyCrudFasade.findAlbumByIdWithArtistAndSong(albumId);
+        Set<ArtistDto> artist = album.artist();
+
+        assertAll(
+                () -> assertThat(songifyCrudFasade.findAllArtists(Pageable.unpaged())).size().isEqualTo(1),
+                () -> assertThat(songifyCrudFasade.findArtistByIdWithAlbum(artistId1).artist().name()).isEqualTo(addArtist1.name()),
+                () -> assertThat(artist)
+                        .extracting("id")
+                        .containsOnly(artistId1)
+        );
 
 
         Throwable artistNotFound = catchThrowable(() -> songifyCrudFasade.findArtistByIdWithAlbum(artistId2));
@@ -239,10 +247,13 @@ class SongifyCrudFasadeTest {
         assertThat(songifyCrudFasade.getAlbumsByArtistId(artistId).size()).isEqualTo(2);
         assertThat(songifyCrudFasade.countArtistByAlbumId(albumId1)).isEqualTo(1);
         assertThat(songifyCrudFasade.countArtistByAlbumId(albumId2)).isEqualTo(1);
+        assertThat(songifyCrudFasade.findAllArtists(Pageable.unpaged()).size()).isEqualTo(1);
         // when
         songifyCrudFasade.deleteArtistByIdWithAlbumsAndSongs(artistId);
         // then
         assertThat(songifyCrudFasade.findAllArtists(Pageable.unpaged())).isEmpty();
+        assertThat(songifyCrudFasade.findAllSongs(Pageable.unpaged())).isEmpty();
+        assertThat(songifyCrudFasade.findAllAlbums(Pageable.unpaged())).isEmpty();
 
         Throwable songNotFound = catchThrowable(() -> songifyCrudFasade.findSongDtoById(songId));
         assertThat(songNotFound).isInstanceOf(SongNotFoundException.class);
@@ -345,7 +356,7 @@ class SongifyCrudFasadeTest {
     }
 
     @Test
-    @DisplayName("Should return by id")
+    @DisplayName("Should return album by id")
     public void should_return_album_by_id() {
         // given
         SongRequestDto songRequestDto = SongRequestDto.builder()
@@ -375,21 +386,7 @@ class SongifyCrudFasadeTest {
     @DisplayName("Should trow exception when album not found by id")
     public void should_throw_exception_when_album_not_found_by_id() {
         // given
-        SongRequestDto songRequestDto = SongRequestDto.builder()
-                .name("song1")
-                .language(SongLanguageDto.DEFAULT)
-                .build();
-        songifyCrudFasade.addSong(songRequestDto);
-
-        AlbumRequestDto album = AlbumRequestDto
-                .builder()
-                .songId(0L)
-                .title("album title 1")
-                .build();
-
         assertThat(songifyCrudFasade.findAllAlbums(Pageable.unpaged())).isEmpty();
-        songifyCrudFasade.addAlbumWithSong(album);
-
         // when
         Throwable throwable = catchThrowable(() -> songifyCrudFasade.findAlbumById(2L));
         // then
@@ -402,11 +399,7 @@ class SongifyCrudFasadeTest {
     @DisplayName("Should throw exceptions When song not found by id")
     public void should_throw_exception_when_song_not_found_by_id() {
         //given
-        SongRequestDto song = SongRequestDto.builder()
-                .name("song1")
-                .language(SongLanguageDto.DEFAULT)
-                .build();
-        SongDto songDto = songifyCrudFasade.addSong(song);
+        assertThat(songifyCrudFasade.findAllSongs(Pageable.unpaged())).isEmpty();
         // when
         Throwable throwable = catchThrowable(() -> songifyCrudFasade.findSongDtoById(1L));
         // then
