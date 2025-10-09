@@ -1,6 +1,6 @@
 package com.songify.infrastructure.crud.album;
 
-import com.songify.domain.crud.SongifyCrudFasade;
+import com.songify.domain.crud.SongifyCrudFacade;
 import com.songify.domain.crud.dto.UpdateAlbumRequestDto;
 import com.songify.domain.crud.dto.AlbumDto;
 import com.songify.domain.crud.dto.AlbumDtoWithArtistAndSongs;
@@ -35,65 +35,65 @@ import static com.songify.infrastructure.crud.album.AlbumControllerMapper.mapFro
 @RequestMapping("/albums")
 class AlbumController {
 
-    private final SongifyCrudFasade songifyCrudFasade;
+    private final SongifyCrudFacade songifyCrudFacade;
 
     @PostMapping()
     public ResponseEntity<AlbumDto> postAlbum(@RequestBody AlbumRequestDto albumRequestDto) {
-        AlbumDto albumDto = songifyCrudFasade.addAlbumWithSong(albumRequestDto);
+        AlbumDto albumDto = songifyCrudFacade.addAlbumWithSong(albumRequestDto);
         return ResponseEntity.ok(albumDto);
     }
 
     @GetMapping("/{albumId}")
     public ResponseEntity<AlbumDtoWithArtistAndSongs> getAlbumById(@PathVariable final Long albumId) {
-        AlbumDtoWithArtistAndSongs albumByIdWithArtistAndSong = songifyCrudFasade.findAlbumByIdWithArtistAndSong(albumId);
+        AlbumDtoWithArtistAndSongs albumByIdWithArtistAndSong = songifyCrudFacade.findAlbumByIdWithArtistAndSong(albumId);
         return ResponseEntity.ok(albumByIdWithArtistAndSong);
     }
 
     @GetMapping()
     public ResponseEntity<AllAlbumsDtoResponse> getAlbums(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        List<AlbumDto> allAlbums = songifyCrudFasade.findAllAlbums(pageable);
+        List<AlbumDto> allAlbums = songifyCrudFacade.findAllAlbums(pageable);
         AllAlbumsDtoResponse albumResponse = mapFromAlbumDtoToAllAlbumsDtoResponse(allAlbums);
         return ResponseEntity.ok(albumResponse);
     }
 
     @DeleteMapping("/{albumId}")
     public ResponseEntity<ActionResponseDto> deleteAlbum(@PathVariable Long albumId) {
-        songifyCrudFasade.deleteAlbumById(albumId);
+        songifyCrudFacade.deleteAlbumById(albumId);
         ActionResponseDto body = getDeleteAlbumResponseDto(albumId);
         return ResponseEntity.ok(body);
     }
 
     @PutMapping("/{albumId}/song/{songId}")
     public ResponseEntity<ActionResponseDto> addSong(@PathVariable Long albumId, @PathVariable Long songId) {
-        songifyCrudFasade.addSongToAlbumById(albumId, songId);
+        songifyCrudFacade.addSongToAlbumById(albumId, songId);
         ActionResponseDto body = getAddSongToAlbumResponseDto(albumId, songId);
         return ResponseEntity.ok(body);
     }
 
     @DeleteMapping("/{albumId}/song/{songId}")
     public ResponseEntity<ActionResponseDto> deleteSongFromAlbum(@PathVariable Long albumId, @PathVariable Long songId) {
-        songifyCrudFasade.deleteSongFromAlbumById(albumId, songId);
+        songifyCrudFacade.deleteSongFromAlbumById(albumId, songId);
         ActionResponseDto body = getDeleteSongFromAlbumResponseDto(albumId, songId);
         return ResponseEntity.ok(body);
     }
 
     @PutMapping("/{albumId}/artist/{artistId}")
     public ResponseEntity<ActionResponseDto> addArtistToAlbumById(@PathVariable Long albumId, @PathVariable Long artistId) {
-        songifyCrudFasade.addArtistToAlbumById(albumId, artistId);
+        songifyCrudFacade.addArtistToAlbumById(albumId, artistId);
         ActionResponseDto body = getAddArtistToAlbumResponseDto(albumId, artistId);
         return ResponseEntity.ok(body);
     }
 
     @DeleteMapping("/{albumId}/artist/{artistId}")
     public ResponseEntity<ActionResponseDto> deleteArtistFromAlbum(@PathVariable Long albumId, @PathVariable Long artistId) {
-        songifyCrudFasade.deleteArtistFromAlbumById(albumId, artistId);
+        songifyCrudFacade.deleteArtistFromAlbumById(albumId, artistId);
         ActionResponseDto body = getDeleteArtistFromAlbumDto(albumId, artistId);
         return ResponseEntity.ok(body);
     }
 
     @PatchMapping("/{albumId}")
     public ResponseEntity<PartiallyUpdateAlbumResponseDto> updateAlbum(@PathVariable Long albumId, @RequestBody UpdateAlbumRequestDto request) {
-        songifyCrudFasade.updateAlbumNameOrReleaseById(albumId, request);
+        songifyCrudFacade.updateAlbumNameOrReleaseById(albumId, request);
         PartiallyUpdateAlbumResponseDto body = createPartiallyUpdatedAlbumResponse(request);
         return ResponseEntity.ok(body);
     }

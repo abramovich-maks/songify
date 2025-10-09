@@ -25,7 +25,7 @@ import java.util.Set;
 @Service
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
 @Transactional
-public class SongifyCrudFasade {
+public class SongifyCrudFacade {
     private final SongAdder songAdder;
     private final SongRetriever songRetriever;
     private final SongDeleter songDeleter;

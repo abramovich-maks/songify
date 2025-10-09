@@ -1,21 +1,20 @@
 package com.songify.domain.songplayer;
 
-import com.songify.domain.crud.SongifyCrudFasade;
 import com.songify.domain.crud.dto.GetSongDto;
 
-public class SongPlayerFasade {
+public class SongifyCrudFacade {
 
-    private final SongifyCrudFasade songifyCrudFasade;
+    private final com.songify.domain.crud.SongifyCrudFacade songifyCrudFacade;
     private final YoutubeHttpClient youtubeHttpClient;
 
 
-    public SongPlayerFasade(final SongifyCrudFasade songifyCrudFasade, final YoutubeHttpClient youtubeHttpClient) {
-        this.songifyCrudFasade = songifyCrudFasade;
+    public SongifyCrudFacade(final com.songify.domain.crud.SongifyCrudFacade songifyCrudFacade, final YoutubeHttpClient youtubeHttpClient) {
+        this.songifyCrudFacade = songifyCrudFacade;
         this.youtubeHttpClient = youtubeHttpClient;
     }
 
     public String playSongWithId(Long id) {
-        GetSongDto songDtoById = songifyCrudFasade.findSongDtoById(id);
+        GetSongDto songDtoById = songifyCrudFacade.findSongDtoById(id);
         String name = songDtoById.name();
         String result = youtubeHttpClient.playSongByName(name);
         if (result.equals("success")) {

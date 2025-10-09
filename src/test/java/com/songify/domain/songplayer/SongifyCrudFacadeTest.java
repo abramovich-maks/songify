@@ -1,6 +1,5 @@
 package com.songify.domain.songplayer;
 
-import com.songify.domain.crud.SongifyCrudFasade;
 import com.songify.domain.crud.dto.GetSongDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,12 +10,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class SongPlayerFasadeTest {
+class SongifyCrudFacadeTest {
 
-    SongifyCrudFasade songifyCrudFacade = mock(SongifyCrudFasade.class);
+    com.songify.domain.crud.SongifyCrudFacade songifyCrudFacade = mock(com.songify.domain.crud.SongifyCrudFacade.class);
     YoutubeHttpClient youtubeHttpClient = mock(YoutubeHttpClient.class);
 
-    SongPlayerFasade songPlayerFacade = new SongPlayerFasade(
+    SongifyCrudFacade songPlayerFacade = new SongifyCrudFacade(
             songifyCrudFacade,
             youtubeHttpClient
     );

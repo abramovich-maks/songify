@@ -2,7 +2,7 @@ package com.songify.domain.crud;
 
 class SongifyCrudFacadeConfiguration {
 
-    public static SongifyCrudFasade createSongifyCrud(final SongRepository songRepository,
+    public static SongifyCrudFacade createSongifyCrud(final SongRepository songRepository,
                                                       final GenreRepository genreRepository,
                                                       final ArtistRepository artistRepository,
                                                       final AlbumRepository albumRepository) {
@@ -23,7 +23,7 @@ class SongifyCrudFacadeConfiguration {
         ArtisDeleter artisDeleter = new ArtisDeleter(artistRepository, artistRetriever, albumDeleter, albumRetriever, songDeleter);
         ArtistAssigner artistAssigner = new ArtistAssigner(artistRetriever, albumRetriever);
         ArtistUpdater artistUpdater = new ArtistUpdater(artistRetriever);
-        return new SongifyCrudFasade(
+        return new SongifyCrudFacade(
                 songAdder,
                 songRetriever,
                 songDeleter,

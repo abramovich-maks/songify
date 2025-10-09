@@ -1,6 +1,6 @@
 package com.songify.infrastructure.crud.song.controller;
 
-import com.songify.domain.crud.SongifyCrudFasade;
+import com.songify.domain.crud.SongifyCrudFacade;
 import com.songify.domain.crud.dto.SongDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import java.util.List;
 @Controller
 public class SongViewController {
 
-    SongifyCrudFasade songifyCrudFasade;
+    SongifyCrudFacade songifyCrudFacade;
 
 
     @GetMapping("/")
@@ -22,7 +22,7 @@ public class SongViewController {
 
     @GetMapping("/view/songs")
     public String songs(Model model) {
-        List<SongDto> songs = songifyCrudFasade.findAllSongs(Pageable.unpaged());
+        List<SongDto> songs = songifyCrudFacade.findAllSongs(Pageable.unpaged());
         model.addAttribute("songs", songs);
         return "song";
     }
