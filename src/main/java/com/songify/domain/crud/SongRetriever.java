@@ -40,6 +40,7 @@ class SongRetriever {
                             .album(song.getAlbum() == null ? "Brak albumu" : song.getAlbum().getTitle())
                             .releaseDate(song.getReleaseDate())
                             .language(song.getLanguage().name())
+                            .duration(song.getDuration())
                             .build();
                 })
                 .orElseThrow(() -> new SongNotFoundException("Song with id: " + id + " not found"));
