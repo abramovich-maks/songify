@@ -10,7 +10,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-class SongifyCrudFacadeTest {
+class SongPlayerFacadeTest {
 
     com.songify.domain.crud.SongifyCrudFacade songifyCrudFacade = mock(com.songify.domain.crud.SongifyCrudFacade.class);
     YoutubeHttpClient youtubeHttpClient = mock(YoutubeHttpClient.class);

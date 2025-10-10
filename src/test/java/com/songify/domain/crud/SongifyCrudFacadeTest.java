@@ -407,4 +407,29 @@ class SongifyCrudFacadeTest {
                 () -> assertThat(throwable).isInstanceOf(SongNotFoundException.class),
                 () -> assertThat(throwable.getMessage()).isEqualTo("Song with id: 1 not found"));
     }
+
+    @Test
+    @DisplayName("Should song by id with genre")
+    public void should_retriever_song_by_id_with_genre() {
+        // given
+        SongRequestDto song = SongRequestDto.builder()
+                .name("song1")
+                .language(SongLanguageDto.DEFAULT)
+                .build();
+        SongDto songDto = songifyCrudFacade.addSong(song);
+        Long songId = songDto.id();
+        // when
+        songifyCrudFacade.findSongDtoById(songId);
+        // then
+        assertAll(
+                () -> assertThat(songifyCrudFacade.findAllSongs(Pageable.unpaged()))
+                        .extracting(SongDto::id)
+                        .containsExactly(0L),
+                () -> assertEquals(songDto.genreName(), "default", "Genre not equals default"),
+                () -> assertEquals(songDto.id(), 0L, "Id must be 0"),
+                () -> assertEquals(songDto.name(), "song1", "SongName must be `song1`")
+        );
+
+
+    }
 }
