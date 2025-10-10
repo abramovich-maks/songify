@@ -9,4 +9,4 @@ ALTER TABLE song_artists
     ADD CONSTRAINT fk_sonart_on_artist FOREIGN KEY (artists_id) REFERENCES artist (id);
 
 ALTER TABLE song_artists
-    ADD CONSTRAINT fk_sonart_on_song_entity FOREIGN KEY (songs_id) REFERENCES song (id);
+    ADD CONSTRAINT fk_sonart_on_song_entity FOREIGN KEY (songs_id)  REFERENCES song (id);
