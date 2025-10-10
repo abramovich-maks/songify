@@ -13,6 +13,7 @@ public record GetSongDto(
         String genre,
         String album,
         Instant releaseDate,
-        String language
+        String language,
+        Long duration
 ) {
 }
