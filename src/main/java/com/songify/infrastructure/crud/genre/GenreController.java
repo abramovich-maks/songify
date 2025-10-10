@@ -28,7 +28,7 @@ class GenreController {
 
     private final SongifyCrudFacade songifyCrudFacade;
 
-    @PostMapping("/{name}")
+    @PostMapping()
     public ResponseEntity<GenreDto> postGenre(@RequestBody GenreRequestDto genreRequestDto) {
         GenreDto genreDto = songifyCrudFacade.addGenre(genreRequestDto);
         return ResponseEntity.ok(genreDto);
