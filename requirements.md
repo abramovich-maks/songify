@@ -37,12 +37,12 @@
 **Given** że wcześniej nie istnieją żadne piosenki, artyści, albumy ani gatunki.
 
 1. **When** I go to `GET /songs` **Then** widzę brak piosenek.
-2. **When** I `POST /songs` z piosenką "Till i collapse" (tytuł, czas, data, język) **Then** zwrócona piosenka ma `id = 1`.
-3. **When** I `POST /songs` z piosenką "Lose Yourself" **Then** zwrócona piosenka ma `id = 2`.
+2. **When** I ` /songs` z piosenką "Till i collapse" (tytuł, czas, data, język) **Then** zwrócona piosenka ma `id = 1`.
+3. **When** I ` /songs` z piosenką "Lose Yourself" **Then** zwrócona piosenka ma `id = 2`.
     - (pokrywa wymaganie 4 — dodawanie piosenki)
 
 4. **When** I go to `GET /genres` **Then** widzę brak gatunków.
-5. **When** I `POST /genres` z gatunkiem "Rap" **Then** zwrócony gatunek ma `id = 1`.
+5. **When** I ` /genres` z gatunkiem "Rap" **Then** zwrócony gatunek ma `id = 1`.
     - (pokrywa wymaganie 2 — dodawanie gatunku)
 
 6. **When** I go to `GET /songs/1` **Then** widzę gatunek `"default"`.
@@ -54,7 +54,7 @@
     - (pokrywa wymagania 15 i 17)
 
 10. **When** I go to `GET /albums` **Then** widzę brak albumów.
-11. **When** I `POST /albums` z albumem "EminemAlbum1" i listą piosenek zawierającą `id = 1` **Then** zwrócony album ma `id = 1`.
+11. **When** I ` /albums` z albumem "EminemAlbum1" i listą piosenek zawierającą `id = 1` **Then** zwrócony album ma `id = 1`.
     - (pokrywa wymaganie 3)
 
 12. **When** I `GET /albums/1` **Then** widzę że album zawiera piosenkę `id = 1`.
@@ -62,10 +62,10 @@
 14. **When** I `PUT /albums/1/songs/2` **Then** piosenka `id = 2` jest przypisana do albumu `id = 1`.
 15. **When** I `GET /albums/1/songs` **Then** widzę piosenki `id = 1` i `id = 2`.
 
-16. **When** I `POST /artists` z artystą "Eminem" **Then** zwrócony artysta ma `id = 1`.
+16. **When** I ` /artists` z artystą "Eminem" **Then** zwrócony artysta ma `id = 1`.
 17. **When** I `PUT /albums/1/artists/1` **Then** artysta `id = 1` ("Eminem") jest przypisany do albumu `id = 1`.
 
-18. **When** I `POST /artists` z artystą "Guest" **Then** zwrócony artysta ma `id = 2`.
+18. **When** I ` /artists` z artystą "Guest" **Then** zwrócony artysta ma `id = 2`.
 19. **When** I `PUT /albums/1/artists/2` **Then** artysta `id = 2` jest przypisany do albumu `id = 1`.
 
 20. **When** I `DELETE /artists/2` **Then** artysta `id = 2` jest usunięty, w albumie `id = 1` pozostaje tylko artysta `id = 1`, piosenki pozostają.
@@ -80,7 +80,7 @@
 26. **When** I `PUT /artists/1` z nazwą "EminemUpdated" **Then** nazwa artysty zostaje zaktualizowana.
 27. **When** I `PUT /genres/1` z nazwą "RapUpdated" **Then** nazwa gatunku zostaje zmieniona.
 
-28. **When** I `POST /albums` z nowym albumem "NewAlbum" i piosenką w payloadzie **Then** mogę:
+28. **When** I ` /albums` z nowym albumem "NewAlbum" i piosenką w payloadzie **Then** mogę:
     - dodawać/usuwać piosenki (`PUT/DELETE /albums/{id}/songs/{id}`),
     - dodawać/usuwać artystów (`PUT/DELETE /albums/{id}/artists/{id}`),
     - zmieniać nazwę albumu (`PUT /albums/{id}`).
@@ -94,3 +94,58 @@
 34. **When** I `GET /albums/{id}` **Then** widzę album wraz z artystami i piosenkami.
 35. **When** I `GET /genres/{id}` **Then** widzę gatunek z piosenkami.
 36. **When** I `GET /artists/{id}` **Then** widzę artystę z jego albumami.
+
+
+# HAPPY PATH Version_2 (after refactoring)
+
+#### **Feature:** Tworzenie albumu, piosenek, artystów i gatunków oraz weryfikacja CRUD.
+#### **Opis:** Użytkownik może tworzyć, edytować, przypisywać i usuwać piosenki, gatunki, albumy oraz artystów. Scenariusz obejmuje pełen cykl życia danych w systemie Songify.
+#### **Given:** Wcześniej nie istnieją żadne piosenki, artyści, albumy ani gatunki.
+
+1. **When** I `GET /songs` **Then** widzę brak piosenek.
+2. **When** I `POST /songs` z piosenką "Till I Collapse", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "ENGLISH" (name, releaseDate, duration, language) **Then** zwrócona piosenka ma `id = 1`.
+3. **When** I `POST /songs` z piosenką "Lose Yourself", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "ENGLISH" **Then** zwrócona piosenka ma `id = 2`.
+4. **When** I `GET /genres` **Then** widzę brak gatunków.
+5. **When** I `POST /genres` z gatunkiem "Rap" **Then** zwrócony gatunek ma `id = 1`.
+6. **When** I `GET /songs/1` **Then** widzę id: `1`, name: `Till I Collapse`, artysta: `Nieznany artysta`, genre: `"default"`, album: `Brak albumu`, releaseDate: `2025-10-10T08:57:09.358Z`, language: `ENGLISH`.
+7. **When** I `PUT /songs/1/genre/1` **Then** gatunek `id = 1` ("Rap") jest przypisany do piosenki `id = 1`.
+8. **When** I `GET /songs/1` **Then** widzę gatunek "Rap" dla piosenki `id = 1`.
+9. **When** I `PUT /songs/2/genre/1` **Then** gatunek "Rap" jest przypisany do piosenki `id = 2`.
+10. **When** I `GET /albums` **Then** widzę brak albumów.
+11. **When** I `POST /albums` z albumem "EminemAlbum1", listą piosenek zawierającą `id = 1`, releaseDate: "2025-10-10T09:12:13.212Z" **Then** zwrócony album ma `id = 1`.
+12. **When** I `GET /albums/1` **Then** widzę, że album zawiera piosenkę `id = 1`, ale brak przypisanych artystów.
+13. **When** I `PUT /albums/1/songs/2` **Then** piosenka `id = 2` jest przypisana do albumu `id = 1`.
+14. **When** I `GET /albums/1` **Then** widzę piosenki `id = 1` i `id = 2`, ale brak przypisanych artystów.
+15. **When** I `POST /artists` z artystą "Eminem" **Then** zwrócony artysta ma `id = 1`.
+16. **When** I `PUT /albums/1/artists/1` **Then** artysta `id = 1` ("Eminem") jest przypisany do albumu `id = 1`.
+17. **When** I `POST /artists` z artystą "Guest" **Then** zwrócony artysta ma `id = 2`.
+18. **When** I `PUT /albums/1/artists/2` **Then** artysta `id = 2` jest przypisany do albumu `id = 1`.
+19. **When** I `GET /albums/1` **Then** widzę, że album zawiera piosenki `id = 1`, `id = 2` oraz artystów: `id = 1`, `id = 2`.
+20. **When** I `DELETE /artists/2` **Then** artysta `id = 2` jest usunięty, w albumie `id = 1` pozostaje tylko artysta `id = 1`, piosenki pozostają.
+---
+21. **When** I `DELETE /genres/1` **Then** operacja jest odrzucona (4xx), bo istnieją piosenki z tym gatunkiem.
+---
+22. **When** I `DELETE /songs/1` **Then** piosenka `id = 1` jest usunięta, album `id = 1` i artysta `id = 1` pozostają.
+23. **When** I `GET /albums/1` **Then** widzę brak piosenek w albumie `id = 1`.
+24. **When** I `DELETE /albums/1` **Then** album `id = 1` jest usunięty.
+25. **When** I `PUT /artists/1` z nazwą "EminemUpdated" **Then** nazwa artysty zostaje zaktualizowana.
+26. **When** I `PUT /genres/1` z nazwą "RapUpdated" **Then** nazwa gatunku zostaje zmieniona.
+27. **When** I `POST /albums` z nowym albumem "NewAlbum" i piosenką `id = 2` **Then** mogę:
+    - dodawać/usuwać piosenki (`PUT/DELETE /albums/{id}/songs/{id}`),
+    - dodawać/usuwać artystów (`PUT/DELETE /albums/{id}/artists/{id}`),
+    - zmieniać nazwę albumu (`PUT /albums/{id}`).
+28. **When** I `POST /songs` z piosenką "NewSong3", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "POLISH" **Then** zwrócona piosenka ma `id = 3`.
+29. **When** I `PUT /songs/3/artist/1` **Then** piosenka `id = 3` jest przypisana do artysty `id = 1`.
+30. **When** I `PUT /songs/3/album/1` **Then** piosenka `id = 3` jest przypisana do albumu `id = 1`.
+31. **When** I `PUT /songs/3/genre/1` **Then** piosenka `id = 3` jest przypisana do gatunku `id = 1`.
+32. **When** I `PATCH /songs/3` **Then** mogę edytować name, releaseDate, duration, language, genreId, listę artistIds, albumId.
+33. **When** I `POST /artist/album/song` z nazwą artysty "DefaultArtist" **Then** utworzy artystę z `id = 3` oraz utworzy przypisany album z przypisaną do artysty piosenką.
+34. **When** I `PATCH /albums/2` **Then** mogę zmienić title albo releaseDate.
+35. **When** I `GET /songs` **Then** widzę wszystkie piosenki.
+36. **When** I `GET /genres` **Then** widzę wszystkie gatunki.
+37. **When** I `GET /artists` **Then** widzę wszystkich artystów.
+38. **When** I `GET /albums` **Then** widzę wszystkie albumy.
+39. **When** I `GET /songs/{id}` **Then** widzę piosenkę wraz z listą artystów, gatunkiem, albumem, releaseDate oraz językiem.
+40. **When** I `GET /albums/{id}` **Then** widzę album wraz z artystami i piosenkami.
+41. **When** I `GET /genres/{id}` **Then** widzę gatunek z piosenkami.
+42. **When** I `GET /artists/{id}` **Then** widzę artystę z jego albumami.  
