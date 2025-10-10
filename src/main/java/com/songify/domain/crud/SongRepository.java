@@ -1,6 +1,7 @@
 package com.songify.domain.crud;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 interface SongRepository extends Repository<SongEntity, Long> {
 
-    @Query("SELECT s FROM SongEntity s")
+    @Query("SELECT s FROM SongEntity s LEFT JOIN FETCH s.genre")
     List<SongEntity> findAll(Pageable pageable);
 
     @Query("SELECT s FROM SongEntity s WHERE s.id = :id")
