@@ -3,6 +3,7 @@ package com.songify.domain.crud;
 import com.songify.domain.crud.dto.AlbumDto;
 import com.songify.domain.crud.dto.AlbumDtoWithArtistAndSongs;
 import com.songify.domain.crud.dto.AlbumRequestDto;
+import com.songify.domain.crud.dto.ArtistDefaultDtoResponse;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
 import com.songify.domain.crud.dto.ArtistWithAlbumDto;
@@ -120,7 +121,7 @@ public class SongifyCrudFacade {
         songAssigner.addGenreToSong(songId, genreId);
     }
 
-    public ArtistDto addArtistWithDefaultAlbumAndSing(ArtistRequestDto dto) {
+    public ArtistDefaultDtoResponse addArtistWithDefaultAlbumAndSing(ArtistRequestDto dto) {
         return artistAdder.addArtistWithDefaultAlbumAndSong(dto);
     }
 

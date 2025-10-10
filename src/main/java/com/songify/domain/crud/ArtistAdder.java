@@ -1,10 +1,10 @@
 package com.songify.domain.crud;
 
+import com.songify.domain.crud.dto.ArtistDefaultDtoResponse;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
 import com.songify.domain.crud.dto.SongDefaultRequestDto;
 import com.songify.domain.crud.dto.SongLanguageDto;
-import com.songify.domain.crud.dto.SongRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ import java.util.UUID;
 class ArtistAdder {
 
     private final ArtistRepository artistRepository;
-    private final AlbumAdder albumAdder;
-    private final SongAdder songAdder;
+    private final AlbumRepository albumRepository;
+    private final SongRepository songRepository;
 
     ArtistDto addArtist(final String name) {
         Artist artist = new Artist(name);
@@ -26,34 +26,28 @@ class ArtistAdder {
         return new ArtistDto(save.getId(), save.getName());
     }
 
-    ArtistDto addArtistWithDefaultAlbumAndSong(final ArtistRequestDto dto) {
-        String artistName = dto.name();
-        Artist save = createArtistWithDefaultAlbumAndSong(artistName);
-        return new ArtistDto(save.getId(), save.getName());
-    }
+    ArtistDefaultDtoResponse addArtistWithDefaultAlbumAndSong(final ArtistRequestDto dto) {
+        Artist artist = new Artist();
+        artist.setName(dto.name());
+        Artist savedArtist = artistRepository.save(artist);
 
-    private Artist createArtistWithDefaultAlbumAndSong(final String artistName) {
-        Album album = createDefaultAlbum();
-        SongEntity song = createDefaultSong();
+        Album album = new Album();
+        album.setTitle("default-album:" + UUID.randomUUID());
+        album.addArtist(savedArtist);
+        Album savedAlbum = albumRepository.save(album);
 
-        Artist artist = new Artist(artistName);
-        album.addSong(song);
+        SongEntity song = new SongEntity();
+        song.setName("default-song-name: " + UUID.randomUUID());
+        song.addArtist(artist);
+        song.addAlbum(album);
+        SongEntity savedSong = songRepository.save(song);
+
         artist.addAlbum(album);
-        return artistRepository.save(artist);
-    }
 
-    private Album createDefaultAlbum() {
-        return albumAdder.addAlbum(
-                "default-album: " + UUID.randomUUID(),
-                LocalDateTime.now().toInstant(ZoneOffset.UTC));
-    }
-
-    private SongEntity createDefaultSong() {
-        return songAdder.addDefaultSong(new SongDefaultRequestDto(
-                "default-song-name: " + UUID.randomUUID(),
-                LocalDateTime.now().toInstant(ZoneOffset.UTC),
-                0L,
-                SongLanguageDto.DEFAULT
-        ));
+        return new ArtistDefaultDtoResponse(
+                savedArtist.getId(),
+                savedArtist.getName(),
+                savedAlbum.getTitle(),
+                savedSong.getName());
     }
 }

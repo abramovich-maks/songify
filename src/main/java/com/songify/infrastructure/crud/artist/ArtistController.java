@@ -2,6 +2,7 @@ package com.songify.infrastructure.crud.artist;
 
 import com.songify.domain.crud.SongifyCrudFacade;
 import com.songify.domain.crud.dto.AlbumDto;
+import com.songify.domain.crud.dto.ArtistDefaultDtoResponse;
 import com.songify.domain.crud.dto.ArtistDto;
 import com.songify.domain.crud.dto.ArtistRequestDto;
 import com.songify.domain.crud.dto.ArtistWithAlbumDto;
@@ -42,9 +43,10 @@ class ArtistController {
     }
 
     @PostMapping("/album/song")
-    public ResponseEntity<ArtistDto> addArtistWithDefaultAlbumAndSing(@RequestBody ArtistRequestDto artistRequestDto) {
-        ArtistDto artistDto = songifyCrudFacade.addArtistWithDefaultAlbumAndSing(artistRequestDto);
-        return ResponseEntity.ok(artistDto);
+    public ResponseEntity<ArtistDefaultDto> addArtistWithDefaultAlbumAndSong(@RequestBody ArtistRequestDto artistRequestDto) {
+        ArtistDefaultDtoResponse artistDefaultDtoResponse = songifyCrudFacade.addArtistWithDefaultAlbumAndSing(artistRequestDto);
+        ArtistDefaultDto artistDefaultDto = new ArtistDefaultDto(artistDefaultDtoResponse.artistId(), artistDefaultDtoResponse.artistName(), artistDefaultDtoResponse.albumName(), artistDefaultDtoResponse.songName());
+        return ResponseEntity.ok(artistDefaultDto);
     }
 
     @GetMapping
