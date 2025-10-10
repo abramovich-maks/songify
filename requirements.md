@@ -114,7 +114,7 @@
 10. **When** I `GET /albums` **Then** widzę brak albumów.
 11. **When** I `POST /albums` z albumem "EminemAlbum1", listą piosenek zawierającą `id = 1`, releaseDate: "2025-10-10T09:12:13.212Z" **Then** zwrócony album ma `id = 1`.
 12. **When** I `GET /albums/1` **Then** widzę, że album zawiera piosenkę `id = 1`, ale brak przypisanych artystów.
-13. **When** I `PUT /albums/1/songs/2` **Then** piosenka `id = 2` jest przypisana do albumu `id = 1`.
+13. **When** I `PUT /albums/1/song/2` **Then** piosenka `id = 2` jest przypisana do albumu `id = 1`.
 14. **When** I `GET /albums/1` **Then** widzę piosenki `id = 1` i `id = 2`, ale brak przypisanych artystów.
 15. **When** I `POST /artists` z artystą "Eminem" **Then** zwrócony artysta ma `id = 1`.
 16. **When** I `PUT /albums/1/artists/1` **Then** artysta `id = 1` ("Eminem") jest przypisany do albumu `id = 1`.
@@ -126,26 +126,34 @@
 21. **When** I `DELETE /genres/1` **Then** operacja jest odrzucona (4xx), bo istnieją piosenki z tym gatunkiem.
 ---
 22. **When** I `DELETE /songs/1` **Then** piosenka `id = 1` jest usunięta, album `id = 1` i artysta `id = 1` pozostają.
-23. **When** I `GET /albums/1` **Then** widzę brak piosenek w albumie `id = 1`.
-24. **When** I `DELETE /albums/1` **Then** album `id = 1` jest usunięty.
-25. **When** I `PUT /artists/1` z nazwą "EminemUpdated" **Then** nazwa artysty zostaje zaktualizowana.
-26. **When** I `PUT /genres/1` z nazwą "RapUpdated" **Then** nazwa gatunku zostaje zmieniona.
-27. **When** I `POST /albums` z nowym albumem "NewAlbum" i piosenką `id = 2` **Then** mogę:
+23. **When** I `GET /albums/1` **Then** widzę, że została tylko piosenka z `id = 2`.
+24. **When** I `DELETE /songs/2` **Then** piosenka `id = 2` jest usunięta, album `id = 1` i artysta `id = 1` pozostają.
+25. **When** I `GET /albums/1` **Then** widzę, że w album nie posiada piosenek`.
+
+26. **When** I `DELETE /albums/1` **Then** album `id = 1` jest usunięty.
+27. **When** I `PUT /artists/1` z nazwą "EminemUpdated" **Then** nazwa artysty zostaje zaktualizowana.
+28. **When** I `PUT /genres/1` z nazwą "RapUpdated" **Then** nazwa gatunku zostaje zmieniona.
+29. **When** I `POST /songs` z piosenką "NewSong3", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "POLISH" **Then** zwrócona piosenka ma `id = 3`.
+30. **When** I `POST /albums` z nowym albumem "NewAlbum" i piosenką `id = 3` **Then** mogę:
     - dodawać/usuwać piosenki (`PUT/DELETE /albums/{id}/songs/{id}`),
     - dodawać/usuwać artystów (`PUT/DELETE /albums/{id}/artists/{id}`),
-    - zmieniać nazwę albumu (`PUT /albums/{id}`).
-28. **When** I `POST /songs` z piosenką "NewSong3", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "POLISH" **Then** zwrócona piosenka ma `id = 3`.
-29. **When** I `PUT /songs/3/artist/1` **Then** piosenka `id = 3` jest przypisana do artysty `id = 1`.
-30. **When** I `PUT /songs/3/album/1` **Then** piosenka `id = 3` jest przypisana do albumu `id = 1`.
-31. **When** I `PUT /songs/3/genre/1` **Then** piosenka `id = 3` jest przypisana do gatunku `id = 1`.
-32. **When** I `PATCH /songs/3` **Then** mogę edytować name, releaseDate, duration, language, genreId, listę artistIds, albumId.
-33. **When** I `POST /artist/album/song` z nazwą artysty "DefaultArtist" **Then** utworzy artystę z `id = 3` oraz utworzy przypisany album z przypisaną do artysty piosenką.
-34. **When** I `PATCH /albums/2` **Then** mogę zmienić title albo releaseDate.
-35. **When** I `GET /songs` **Then** widzę wszystkie piosenki.
-36. **When** I `GET /genres` **Then** widzę wszystkie gatunki.
-37. **When** I `GET /artists` **Then** widzę wszystkich artystów.
-38. **When** I `GET /albums` **Then** widzę wszystkie albumy.
-39. **When** I `GET /songs/{id}` **Then** widzę piosenkę wraz z listą artystów, gatunkiem, albumem, releaseDate oraz językiem.
-40. **When** I `GET /albums/{id}` **Then** widzę album wraz z artystami i piosenkami.
-41. **When** I `GET /genres/{id}` **Then** widzę gatunek z piosenkami.
-42. **When** I `GET /artists/{id}` **Then** widzę artystę z jego albumami.  
+    - zmieniać nazwę albumu/releaseDate (`PATCH /albums/{id}`).
+31. **When** I `PUT /songs/3/artist/1` **Then** piosenka `id = 3` jest przypisana do artysty `id = 1`.
+32. **When** I `PUT /songs/3/album/2` **Then** piosenka `id = 3` jest przypisana do albumu `id = 2`.
+32. **When** I `POST /songs` z piosenką "Song_4", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "ENGLISH" **Then** zwrócona piosenka ma `id = 4`.
+33. **When** I `PUT /songs/4/album/2` **Then** piosenka `id = 4` jest przypisana do albumu `id = 2`.
+34. **When** I `PUT /songs/3/genre/1` **Then** piosenka `id = 3` jest przypisana do gatunku `id = 1`.
+35. **When** I `PATCH /songs/3` **Then** edytuje name, releaseDate, duration.
+36. **When** I `POST /genres` z gatunkiem "Pop" **Then** zwrócony gatunek ma `id = 2`.
+37. **When** I `POST /artists` z artystą "Balak" **Then** zwrócony artysta ma `id = 3`.
+38. **When** I `PATCH /songs/3` **Then** edytuje language, genreId, listę artistIds.
+39. **When** I `POST /artist/album/song` z nazwą artysty "DefaultArtist" **Then** utworzy artystę z `id = 3` oraz utworzy przypisany album z przypisaną do artysty piosenką.
+40. **When** I `PATCH /albums/2` **Then** mogę zmienić title albo releaseDate.
+41. **When** I `GET /songs` **Then** widzę wszystkie piosenki.
+42. **When** I `GET /genres` **Then** widzę wszystkie gatunki.
+43. **When** I `GET /artists` **Then** widzę wszystkich artystów.
+44. **When** I `GET /albums` **Then** widzę wszystkie albumy.
+45. **When** I `GET /songs/{id}` **Then** widzę piosenkę wraz z listą artystów, gatunkiem, albumem, releaseDate oraz językiem.
+46. **When** I `GET /albums/{id}` **Then** widzę album wraz z artystami i piosenkami.
+47. **When** I `GET /genres/{id}` **Then** widzę gatunek z piosenkami.
+48. **When** I `GET /artists/{id}` **Then** widzę artystę z jego albumami.
