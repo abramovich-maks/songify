@@ -153,7 +153,7 @@
 42. **When** I `GET /genres` **Then** widzę wszystkie gatunki.
 43. **When** I `GET /artists` **Then** widzę wszystkich artystów.
 44. **When** I `GET /albums` **Then** widzę wszystkie albumy.
-45. **When** I `GET /songs/{id}` **Then** widzę piosenkę wraz z listą artystów, gatunkiem, albumem, releaseDate oraz językiem.
-46. **When** I `GET /albums/{id}` **Then** widzę album wraz z artystami i piosenkami.
-47. **When** I `GET /genres/{id}` **Then** widzę gatunek z piosenkami.
-48. **When** I `GET /artists/{id}` **Then** widzę artystę z jego albumami.
+45. **When** I `GET /songs/3` **Then** widzę piosenkę wraz z listą artystów, gatunkiem, albumem, releaseDate oraz językiem.
+46. **When** I `GET /albums/2` **Then** widzę album wraz z artystami i piosenkami.
+47. **When** I `GET /genres/2` **Then** widzę gatunek z piosenkami.
+48. **When** I `GET /artists/4` **Then** widzę artystę z jego albumami.

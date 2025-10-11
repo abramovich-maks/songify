@@ -560,16 +560,83 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.artistName", is("DefaultArtist")))
                 .andExpect(jsonPath("$.albumName", startsWith("default-album")))
                 .andExpect(jsonPath("$.songName", startsWith("default-song")));
+
+        //40. **When** I `PATCH /albums/2` **Then** mogę zmienić title albo releaseDate.
+        mockMvc.perform(patch("/albums/2")
+                        .content("""
+                                {
+                                  "title": "Java"
+                                  }
+                                """.trim())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title", is("Java")));
+
+        //41. **When** I `GET /songs` **Then** widzę wszystkie piosenki.
+        mockMvc.perform(get("/songs")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.songs[*].id", containsInAnyOrder(3, 4, 5)))
+                .andExpect(jsonPath("$.songs", hasSize(3)));
+
+        //42. **When** I `GET /genres` **Then** widzę wszystkie gatunki.
+        mockMvc.perform(get("/genres")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.genre[*].id", containsInAnyOrder(1, 2)))
+                .andExpect(jsonPath("$.genre[*].name", containsInAnyOrder("RapUpdated", "Pop")));
+
+        //43. **When** I `GET /artists` **Then** widzę wszystkich artystów.
+        mockMvc.perform(get("/artists")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.artist[*].id", containsInAnyOrder(1, 3, 4)))
+                .andExpect(jsonPath("$.artist[*].name", containsInAnyOrder("EminemUpdated", "Balak", "DefaultArtist")));
+
+        //44. **When** I `GET /albums` **Then** widzę wszystkie albumy.
+        mockMvc.perform(get("/albums")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.allAlbums[*].id", containsInAnyOrder(2, 3)))
+                .andExpect(jsonPath("$.allAlbums[0].name", startsWith("default-album:")))
+                .andExpect(jsonPath("$.allAlbums[1].name", is("Java")));
+
+        //45. **When** I `GET /songs/3` **Then** widzę piosenkę wraz z listą artystów, gatunkiem, albumem, releaseDate oraz językiem.
+        mockMvc.perform(get("/songs/3")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(3)))
+                .andExpect(jsonPath("$.name", is("Alalala new songName")))
+                .andExpect(jsonPath("$.artists", containsInAnyOrder("Balak", "EminemUpdated")))
+                .andExpect(jsonPath("$.genre", is("Pop")))
+                .andExpect(jsonPath("$.album", is("Java")))
+                .andExpect(jsonPath("$.releaseDate", is("1111-10-10T08:57:09.358Z")))
+                .andExpect(jsonPath("$.language", is("POLISH")))
+                .andExpect(jsonPath("$.duration", is(9999)));
+
+        //46. **When** I `GET /albums/2` **Then** widzę album wraz z artystami i piosenkami.
+        mockMvc.perform(get("/albums/2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.album.id", is(2)))
+                .andExpect(jsonPath("$.album.name", is("Java")))
+                .andExpect(jsonPath("$.artist", empty()))
+                .andExpect(jsonPath("$.song[*].id", containsInAnyOrder(3, 4)))
+                .andExpect(jsonPath("$.song[*].name", containsInAnyOrder("Alalala new songName", "Song_4")))
+                .andExpect(jsonPath("$.song", hasSize(2)));
+
+        //47. **When** I `GET /genres/{id}` **Then** widzę gatunek z piosenkami.
+        mockMvc.perform(get("/genres/2")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.genre.id", is(2)))
+                .andExpect(jsonPath("$.genre.name", is("Pop")))
+                .andExpect(jsonPath("$.songs[0].id", is(3)))
+                .andExpect(jsonPath("$.songs[0].songName", is("Alalala new songName")))
+                .andExpect(jsonPath("$.songs", hasSize(1)));
+
+        //48. **When** I `GET /artists/1` **Then** widzę artystę z jego albumami.
+        mockMvc.perform(get("/artists/4")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.artist.id", is(4)))
+                .andExpect(jsonPath("$.artist.name", is("DefaultArtist")))
+                .andExpect(jsonPath("$.albums", hasSize(1)))
+                .andExpect(jsonPath("$.albums[0].id", is(3)))
+                .andExpect(jsonPath("$.albums[0].name", startsWith("default-album:")));
     }
 }
 
 
-//40. **When** I `PATCH /albums/2` **Then** mogę zmienić title albo releaseDate.
-//41. **When** I `GET /songs` **Then** widzę wszystkie piosenki.
-//42. **When** I `GET /genres` **Then** widzę wszystkie gatunki.
-//43. **When** I `GET /artists` **Then** widzę wszystkich artystów.
-//44. **When** I `GET /albums` **Then** widzę wszystkie albumy.
-//45. **When** I `GET /songs/{id}` **Then** widzę piosenkę wraz z listą artystów, gatunkiem, albumem, releaseDate oraz językiem.
-//46. **When** I `GET /albums/{id}` **Then** widzę album wraz z artystami i piosenkami.
-//47. **When** I `GET /genres/{id}` **Then** widzę gatunek z piosenkami.
-//48. **When** I `GET /artists/{id}` **Then** widzę artystę z jego albumami.
