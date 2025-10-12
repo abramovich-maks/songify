@@ -56,6 +56,10 @@
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 140px;
         }
         .card:hover {
             transform: translateY(-5px);
@@ -69,6 +73,31 @@
             font-weight: bold;
             margin-top: 8px;
         }
+        .card-footer {
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .small-btn {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.25);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+        .small-btn:hover {
+            background: rgba(0,0,0,0.35);
+            transform: translateY(-2px);
+        }
+        .genre {
+            font-size: 13px;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -79,9 +108,17 @@
 <h1>🎶 Songs Gallery</h1>
 <div class="container">
     <div class="card" th:each="song : ${songs}">
-        <div class="id">ID: <span th:text="${song.id}"></span></div>
-        <div class="song" th:text="${song.name}"></div>
-        <div class="artist" th:text="${song.artist}"></div>
+        <div>
+            <div class="id">ID: <span th:text="${song.id}"></span></div>
+            <div class="song" th:text="${song.name}">Song name</div>
+            <div class="genre" th:text="${song.genreName}">Genre</div>
+        </div>
+        <div class="card-footer">
+            <a class="small-btn"
+               th:href="@{/view/songs/{songId}(songId=${song.id})}">
+                Details
+            </a>
+        </div>
     </div>
 </div>
 </body>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'Song Details - ' + ${songs.name}">Song Details</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #ffffff;
+            position: relative;
+        }
+        h1 {
+            text-align: center;
+            margin: 40px 0 10px 0;
+            font-size: 32px;
+        }
+        .nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .btn {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-3px);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .row {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .label {
+            font-weight: bold;
+            opacity: 0.85;
+        }
+        .value {
+            margin-left: 8px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+        }
+        li {
+            background: rgba(255,255,255,0.1);
+            padding: 5px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin: 4px;
+        }
+    </style>
+</head>
+<body>
+<div class="nav">
+    <a class="btn" th:href="@{/view/songs}">⬅ Back to Songs</a>
+</div>
+
+<h1>🎵 Song Details</h1>
+
+<div class="card">
+    <div class="row">
+        <span class="label">ID:</span>
+        <span class="value" th:text="${songs.id}">1</span>
+    </div>
+    <div class="row">
+        <span class="label">Name:</span>
+        <span class="value" th:text="${songs.name}">Till I Collapse</span>
+    </div>
+    <div class="row">
+        <span class="label">Artists:</span>
+        <ul>
+            <li th:each="artist : ${songs.artists}" th:text="${artist}">Eminem</li>
+        </ul>
+    </div>
+    <div class="row">
+        <span class="label">Genre:</span>
+        <span class="value" th:text="${songs.genre}">Rap</span>
+    </div>
+    <div class="row">
+        <span class="label">Album:</span>
+        <span class="value" th:text="${songs.album}">EminemAlbum1</span>
+    </div>
+    <div class="row">
+        <span class="label">Release Date:</span>
+        <span class="value" th:text="${#dates.format(songs.releaseDate, 'yyyy-MM-dd HH:mm')}">2025-10-10</span>
+    </div>
+    <div class="row">
+        <span class="label">Language:</span>
+        <span class="value" th:text="${songs.language}">ENGLISH</span>
+    </div>
+    <div class="row">
+        <span class="label">Duration (s):</span>
+        <span class="value" th:text="${songs.duration}">180</span>
+    </div>
+</div>
+
+</body>
+</html>
