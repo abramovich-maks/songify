@@ -3,6 +3,7 @@ package com.songify.infrastructure.security;
 import com.songify.domain.usercrud.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,10 +26,41 @@ class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
+        http
                 .csrf(c -> c.disable())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
-                .build();
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-resources/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/users/register/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/songs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/genres/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/albums/**").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/songs/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/songs/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/songs/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/songs/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/artists/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/artists/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/artists/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/artists/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/genres/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/genres/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/genres/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/genres/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/albums/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/albums/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/albums/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/albums/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                );
+        return http.build();
     }
 }
