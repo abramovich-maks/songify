@@ -33,7 +33,7 @@ class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(c -> c.disable())
-                .cors(c -> corsConfigurerCustomizer())
+                .cors(corsConfigurerCustomizer())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
