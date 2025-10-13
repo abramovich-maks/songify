@@ -23,10 +23,10 @@ import java.util.HashSet;
 public class User extends BaseEntity {
 
     @Id
-    @GeneratedValue(generator = "user_id_seq", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "users_id_seq", strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(
-            name = "user_id_seq",
-            sequenceName = "user_id_seq",
+            name = "users_id_seq",
+            sequenceName = "users_id_seq",
             allocationSize = 1
     )
     private Long id;
