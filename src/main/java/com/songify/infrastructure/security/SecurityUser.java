@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 public class SecurityUser implements UserDetails {
 
@@ -19,6 +20,10 @@ public class SecurityUser implements UserDetails {
         return user.getAuthorities().stream()
                 .map(authority -> (GrantedAuthority) () -> authority)
                 .toList();
+    }
+
+    public List<String> getAuthoritiesAsString() {
+        return user.getAuthorities().stream().toList();
     }
 
     @Override
