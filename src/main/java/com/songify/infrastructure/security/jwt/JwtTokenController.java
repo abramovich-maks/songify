@@ -1,5 +1,7 @@
 package com.songify.infrastructure.security.jwt;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,16 +14,20 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 class JwtTokenController {
 
-    private final JwtTokenGenerator jwtTokenGenerator;
+    private final JwtTokenGenerator tokenGenerator;
 
     @PostMapping("/token")
-    public ResponseEntity<JwtResponseDto> authenticateAndGenerateToken(@RequestBody TokenRequestDto dto) throws NoSuchAlgorithmException {
-        String token = jwtTokenGenerator.authenticateAndGenerateToken(dto.username(), dto.password());
-        return ResponseEntity.ok(
+    public ResponseEntity<JwtResponseDto> authenticateAndGenerateToken(@RequestBody TokenRequestDto dto, HttpServletResponse response) throws NoSuchAlgorithmException {
+        String token = tokenGenerator.authenticateAndGenerateToken(dto.username(), dto.password());
+        Cookie cookie = new Cookie("accessToken", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(60 * 60);
+        response.addCookie(cookie);
+        return ResponseEntity.ok().body(
                 JwtResponseDto.builder()
                         .token(token)
-                        .build()
-
-        );
+                        .build());
     }
 }
