@@ -33,7 +33,7 @@ class JwtTokenGenerator {
         UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authenticate);
         SecurityUser user = (SecurityUser) authentication.getPrincipal();
-        Instant issuedAt = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+        Instant issuedAt = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
         Instant expiresAt = issuedAt.plus(Duration.ofMinutes(properties.expirationMinutes()));
 
 //        Algorithm algorithm = Algorithm.HMAC256(properties.secret());
