@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.interfaces.RSAPrivateKey;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -33,16 +33,20 @@ class JwtTokenGenerator {
         UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(authenticate);
         SecurityUser user = (SecurityUser) authentication.getPrincipal();
-        Instant issuedAt = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
-        Instant expiresAt = issuedAt.plus(Duration.ofMinutes(properties.expirationMinutes()));
+        return createToken(user);
+    }
 
-//        Algorithm algorithm = Algorithm.HMAC256(properties.secret());
-        Algorithm algorithm = Algorithm.RSA256(null, (RSAPrivateCrtKey) keyPair.getPrivate());
+    private String createToken(final SecurityUser user) {
+        Algorithm algorithm = Algorithm.RSA256(null, (RSAPrivateKey) keyPair.getPrivate()); // asymmetric key
+        long minutes = properties.expirationMinutes();
+        String issuer = properties.issuer();
+        Instant now = LocalDateTime.now(clock).toInstant(ZoneOffset.UTC);
+        Instant expiresAt = now.plus(Duration.ofMinutes(minutes));
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withIssuedAt(issuedAt)
+                .withIssuedAt(now)
                 .withExpiresAt(expiresAt)
-                .withIssuer(properties.issuer())
+                .withIssuer(issuer)
                 .withClaim(ROLES_CLAIM_NAME, user.getAuthoritiesAsString())
                 .sign(algorithm);
     }

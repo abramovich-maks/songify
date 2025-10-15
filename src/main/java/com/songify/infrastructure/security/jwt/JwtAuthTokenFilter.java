@@ -9,7 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,8 +23,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 
 @Component
-@AllArgsConstructor
 @Log4j2
+@RequiredArgsConstructor
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     private final KeyPair keyPair;
@@ -36,17 +36,15 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
         JWTVerifier jwtVerifier = JWT.require(Algorithm.RSA256((RSAPublicKey) keyPair.getPublic(), null))
                 .build();
-        DecodedJWT decodedJwt = jwtVerifier.verify(token);
-        String login = decodedJwt.getSubject();
-        List<SimpleGrantedAuthority> roles = decodedJwt.getClaim("roles")
+        DecodedJWT decodedToken = jwtVerifier.verify(token);
+        String login = decodedToken.getSubject();
+        List<SimpleGrantedAuthority> roles = decodedToken.getClaim("roles")
                 .asList(String.class)
                 .stream()
                 .map(SimpleGrantedAuthority::new)
                 .toList();
-
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(login, null, roles);
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         filterChain.doFilter(request, response);

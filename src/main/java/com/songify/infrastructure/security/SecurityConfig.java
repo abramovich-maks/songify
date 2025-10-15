@@ -54,7 +54,7 @@ class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/users/register/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/token/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/songs/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/songs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/genres/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/albums/**").permitAll()
@@ -88,7 +88,7 @@ class SecurityConfig {
             CorsConfigurationSource source = request -> {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(
-                        List.of("http://localhost:3000"));
+                        List.of("https://localhost:5174"));
                 config.setAllowedMethods(
                         List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
                 config.setAllowedHeaders(List.of("*"));
