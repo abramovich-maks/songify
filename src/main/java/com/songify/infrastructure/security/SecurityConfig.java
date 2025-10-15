@@ -38,14 +38,16 @@ class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationSuccessHandler successHandler) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationSuccessHandler successHandler, CustomOidcUserService customOidcUserService) throws Exception {
         http
                 .csrf(c -> c.disable())
                 .cors(corsConfigurerCustomizer())
                 .formLogin(c -> c.disable())
                 .httpBasic(c -> c.disable())
-                .oauth2Login(Customizer.withDefaults())
-                .oauth2Login(c -> c.successHandler(successHandler))
+                .oauth2Login(c -> c.successHandler(successHandler)
+                        .userInfoEndpoint(userInfo -> userInfo.oidcUserService(
+                                customOidcUserService
+                        )))
 //                .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v3/api-docs/**").permitAll()
@@ -53,6 +55,7 @@ class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/users/register/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/songs/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/message").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/genres/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/albums/**").permitAll()
