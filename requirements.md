@@ -29,17 +29,17 @@
 25. ~~Można wyświetlać konkretnych artystów wraz z ich albumami~~
 26. ~~Chcemy mieć trwałe dane~~
     ##### SECURITY:
-27. Kazdy bez uwierzytelnienia (authentication) moze przegladac piosenki, albumy itp (gosc niezalogowany)~~
-28. Są 2 role: ROLE_USER i ROLE_ADMIN
-29. Uzywanie bezstanowego tokena JWT (uzyskuje go po zalogowaniu) - wlasna implementacja authorization i potem oauth2 google
+27. ~~Kazdy bez uwierzytelnienia (authentication) moze przegladac piosenki, albumy itp (gosc niezalogowany)~~
+28. ~~Są 2 role: ROLE_USER i ROLE_ADMIN~~
+29. ~~Uzywanie bezstanowego tokena JWT (uzyskuje go po zalogowaniu) - wlasna implementacja authorization~~ i potem oauth2 google
 30. tylko admin moze przejrzec loginy i role uzytkownikow endpoint /users
-31. zeby zostac uzytkownikiem trzeba sie zarejestrowac login/haslo - wlasna implementacja i GOOGLE
-32. zapisujemy uzytkownika i admina do bazy danych (w przypadku wlasnej implementacji) - admin tworzony w migracji flyway
-33. uzytkownik moze wyswietlac piosenki, ale nie moze zarzadzac (w przyszlosci uzytkownik moze miec swoj profil, a tam "ulubione piosenki") - ROLE_USER
-34. tylko admin moze zmieniac stan aplikacji (usuwac, dodawac, edytowac piosenki/albumy itp)
-35. chcemy miec szyfrowanie HTTPS, certyfikat wygenerowany recznie openssl
-36. chcemy miec obsługe CORS - zapytania z domeny frontendowej
-37. chcemy zabezpiecznie CSRF bo bedzie frontend uzywany
+31. ~~zeby zostac uzytkownikiem trzeba sie zarejestrowac login/haslo - wlasna implementacja i GOOGLE~~
+32. ~~zapisujemy uzytkownika i admina do bazy danych (w przypadku wlasnej implementacji) - admin tworzony w migracji flyway~~
+33. ~~uzytkownik moze wyswietlac piosenki, ale nie moze zarzadzac~~ (w przyszlosci uzytkownik moze miec swoj profil, a tam "ulubione piosenki") - ROLE_USER
+34. ~~tylko admin moze zmieniac stan aplikacji (usuwac, dodawac, edytowac piosenki/albumy itp)~~
+35. ~~chcemy miec szyfrowanie HTTPS, certyfikat wygenerowany recznie openssl~~
+36. ~~chcemy miec obsługe CORS - zapytania z domeny frontendowej~~
+37. ~~chcemy zabezpiecznie CSRF bo bedzie frontend uzywany~~
 38. jako bonus potwierdzenie e-maila po rejestracji
 
 
