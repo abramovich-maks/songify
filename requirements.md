@@ -31,7 +31,7 @@
     ##### SECURITY:
 27. ~~Kazdy bez uwierzytelnienia (authentication) moze przegladac piosenki, albumy itp (gosc niezalogowany)~~
 28. ~~Są 2 role: ROLE_USER i ROLE_ADMIN~~
-29. ~~Uzywanie bezstanowego tokena JWT (uzyskuje go po zalogowaniu) - wlasna implementacja authorization~~ i potem oauth2 google
+29. ~~Uzywanie bezstanowego tokena JWT (uzyskuje go po zalogowaniu) - wlasna implementacja authorization~~ ~~i potem oauth2 google~~
 30. tylko admin moze przejrzec loginy i role uzytkownikow endpoint /users
 31. ~~zeby zostac uzytkownikiem trzeba sie zarejestrowac login/haslo - wlasna implementacja i GOOGLE~~
 32. ~~zapisujemy uzytkownika i admina do bazy danych (w przypadku wlasnej implementacji) - admin tworzony w migracji flyway~~
