@@ -1,6 +1,6 @@
 package com.songify.infrastructure.security.jwt;
 
-import com.songify.infrastructure.security.SecurityUser;
+import com.songify.domain.usercrud.SecurityUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.userdetails.UserDetailsService;

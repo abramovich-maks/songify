@@ -1,5 +1,7 @@
 package com.songify.infrastructure.security;
 
+import com.songify.domain.usercrud.UserConformer;
+import com.songify.domain.usercrud.UserDetailsServiceImpl;
 import com.songify.domain.usercrud.UserRepository;
 import com.songify.infrastructure.security.jwt.JwtAuthConverter;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +32,8 @@ class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsManager userDetailsService(UserRepository userRepository) {
-        return new UserDetailsServiceImpl(userRepository, passwordEncoder());
+    public UserDetailsManager userDetailsService(UserRepository userRepository, UserConformer userConformer) {
+        return new UserDetailsServiceImpl(userRepository, passwordEncoder(), userConformer);
     }
 
     @Bean
@@ -84,6 +86,7 @@ class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/albums/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/albums/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/albums/**").hasRole("ADMIN")
+                        .requestMatchers("/users/confirm/**").permitAll()
                         .anyRequest().authenticated()
                 );
         return http.build();

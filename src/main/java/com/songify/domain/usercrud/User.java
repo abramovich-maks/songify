@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,19 +34,29 @@ public class User extends BaseEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @Email
     private String email;
 
     @Column(nullable = false)
+    @Size(min = 8)
     private String password;
 
-    private boolean enabled = true;
+    private String confirmationToken;
+
+    private boolean enabled = false;
 
     private Collection<String> authorities = new HashSet<>();
 
-    public User(final String email, final String password, final boolean enabled, final Collection<String> authorities) {
+    public boolean confirm() {
+        this.setEnabled(true);
+        this.setConfirmationToken(null);
+        return true;
+    }
+
+    public User(final String email, final String password, String confirmationToken, final Collection<String> authorities) {
         this.email = email;
         this.password = password;
-        this.enabled = enabled;
+        this.confirmationToken = confirmationToken;
         this.authorities = authorities;
     }
 }

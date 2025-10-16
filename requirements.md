@@ -40,7 +40,7 @@
 35. ~~chcemy miec szyfrowanie HTTPS, certyfikat wygenerowany recznie openssl~~
 36. ~~chcemy miec obsługe CORS - zapytania z domeny frontendowej~~
 37. ~~chcemy zabezpiecznie CSRF bo bedzie frontend uzywany~~
-38. jako bonus potwierdzenie e-maila po rejestracji
+38.  potwierdzenie e-maila po rejestracji
 
 
 # HAPPY PATH:

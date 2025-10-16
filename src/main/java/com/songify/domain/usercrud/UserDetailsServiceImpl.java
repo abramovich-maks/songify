@@ -1,15 +1,15 @@
-package com.songify.infrastructure.security;
+package com.songify.domain.usercrud;
 
-import com.songify.domain.usercrud.User;
-import com.songify.domain.usercrud.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 
-import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Log4j2
 @AllArgsConstructor
@@ -19,6 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsManager {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserConformer userConformer;
 
 
     @Override
@@ -35,15 +36,19 @@ public class UserDetailsServiceImpl implements UserDetailsManager {
             throw new RuntimeException("not saved user - already exists");
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
+        String confirmationToken = UUID.randomUUID().toString();
         User createdUser = new User(
                 user.getUsername(),
                 encodedPassword,
-                true,
-                List.of(DEFAULT_USER_ROLE)
+                confirmationToken,
+                user.getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.toList())
         );
         User savedUser = userRepository.save(createdUser);
         log.warn("Saved user with id: {}", savedUser.getId());
-        //  todo send email confirmation
+        userConformer.sendConfirmationEmail(createdUser);
     }
 
     @Override
