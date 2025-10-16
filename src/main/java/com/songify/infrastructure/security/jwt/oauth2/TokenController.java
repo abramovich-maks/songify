@@ -1,4 +1,4 @@
-package com.songify.infrastructure.security.jwt;
+package com.songify.infrastructure.security.jwt.oauth2;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

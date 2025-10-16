@@ -3,7 +3,7 @@ package com.songify.infrastructure.security;
 import com.songify.domain.usercrud.UserConformer;
 import com.songify.domain.usercrud.UserDetailsServiceImpl;
 import com.songify.domain.usercrud.UserRepository;
-import com.songify.infrastructure.security.jwt.JwtAuthConverter;
+import com.songify.infrastructure.security.jwt.oauth2.JwtAuthConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -17,7 +17,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -42,25 +41,29 @@ class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationSuccessHandler successHandler, JwtAuthConverter converter, CookieTokenResolver resolver) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                            JwtAuthConverter converter,
+                                            MySuccessHandler mySuccessHandler,
+
+                                            CookieTokenResolver cookieTokenResolver) throws Exception {
         http
                 .csrf(c -> c.disable())
                 .cors(corsConfigurerCustomizer())
                 .formLogin(c -> c.disable())
                 .httpBasic(c -> c.disable())
-                .oauth2Login(c -> c.successHandler(successHandler))
-                .oauth2ResourceServer(c -> c.jwt(jwt -> jwt.jwtAuthenticationConverter(converter)))
-
-//                .oauth2Login(c -> c.successHandler(successHandler)
-//                        .userInfoEndpoint(userInfo -> userInfo.oidcUserService(
-//                                customOidcUserService
-//                        )))
+                .oauth2Login(oauth -> oauth.successHandler(mySuccessHandler))
+                .oauth2ResourceServer(rs -> rs
+                        .bearerTokenResolver(cookieTokenResolver)
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(converter)))
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtAuthTokenFilter, BearerTokenAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/users/register/**").permitAll()
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/token/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/songs/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/message").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/artists/**").permitAll()

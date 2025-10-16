@@ -1,4 +1,4 @@
-package com.songify.infrastructure.security.jwt;
+package com.songify.infrastructure.security.jwt.oauth2;
 
 import com.songify.domain.usercrud.SecurityUser;
 import lombok.RequiredArgsConstructor;

@@ -23,6 +23,10 @@ public class SecurityUser implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    public List<String> getAuthoritiesAsString() {
+        return user.getAuthorities().stream().toList();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
