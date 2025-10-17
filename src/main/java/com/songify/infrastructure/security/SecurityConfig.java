@@ -44,7 +44,7 @@ class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http,
                                             JwtAuthConverter converter,
                                             MySuccessHandler mySuccessHandler,
-
+            /* JwtAuthTokenFilter jwtAuthTokenFilter, */
                                             CookieTokenResolver cookieTokenResolver) throws Exception {
         http
                 .csrf(c -> c.disable())
@@ -54,9 +54,10 @@ class SecurityConfig {
                 .oauth2Login(oauth -> oauth.successHandler(mySuccessHandler))
                 .oauth2ResourceServer(rs -> rs
                         .bearerTokenResolver(cookieTokenResolver)
-                        .jwt(jwt -> jwt.jwtAuthenticationConverter(converter)))
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(converter))
+                )
+//                .addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .addFilterBefore(jwtAuthTokenFilter, BearerTokenAuthenticationFilter.class)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
