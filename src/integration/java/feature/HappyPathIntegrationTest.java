@@ -1,11 +1,14 @@
 package feature;
 
 import com.songify.SongifyApplication;
+import com.songify.infrastructure.security.jwt.oauth2.JwtAuthConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -19,6 +22,8 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -39,6 +44,9 @@ class HappyPathIntegrationTest {
     @Autowired
     public MockMvc mockMvc;
 
+    @Autowired
+    private JwtAuthConverter jwtAuthConverter;
+
     @DynamicPropertySource
     public static void propertyOverride(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
@@ -48,12 +56,14 @@ class HappyPathIntegrationTest {
     public void happy_path() throws Exception {
         // 1. **When** I `GET /songs` **Then** widzę brak piosenek.
         mockMvc.perform(get("/songs")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.songs", empty()));
 
         // 2. **When** I `POST /songs` z piosenką "Till I Collapse", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "ENGLISH" (name, releaseDate, duration, language) **Then** zwrócona piosenka ma `id = 1`.
         mockMvc.perform(post("/songs")
+                        .with(authentication(createJwtWithAdminRole()))
                         .content("""
                                 {
                                   "name": "Till I Collapse",
@@ -70,6 +80,7 @@ class HappyPathIntegrationTest {
 
         // 3. **When** I `POST /songs` z piosenką "Lose Yourself", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "ENGLISH" **Then** zwrócona piosenka ma `id = 2`.
         mockMvc.perform(post("/songs")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Lose Yourself",
@@ -93,6 +104,7 @@ class HappyPathIntegrationTest {
 
         // 5. **When** I `POST /genres` z gatunkiem "Rap" **Then** zwrócony gatunek ma `id = 1`.
         mockMvc.perform(post("/genres")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Rap"
@@ -117,6 +129,7 @@ class HappyPathIntegrationTest {
 
         // 7. **When** I `PUT /songs/1/genre/1` **Then** gatunek `id = 1` ("Rap") jest przypisany do piosenki `id = 1`.
         mockMvc.perform(put("/songs/1/genre/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("For the song with id: 1 the genre was changed to id: 1")))
@@ -136,6 +149,7 @@ class HappyPathIntegrationTest {
 
         // 9. **When** I `PUT /songs/2/genre/1` **Then** gatunek "Rap" jest przypisany do piosenki `id = 2`.
         mockMvc.perform(put("/songs/2/genre/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("For the song with id: 2 the genre was changed to id: 1")))
@@ -149,6 +163,7 @@ class HappyPathIntegrationTest {
 
         // 11. **When** I `POST /albums` z albumem "EminemAlbum1", listą piosenek zawierającą `id = 1`, releaseDate: "2025-10-10T09:12:13.212Z" **Then** zwrócony album ma `id = 1`.
         mockMvc.perform(post("/albums")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "songId": 1,
@@ -174,6 +189,7 @@ class HappyPathIntegrationTest {
 
         // 13. **When** I `PUT /albums/1/song/2` **Then** piosenka `id = 2` jest przypisana do albumu `id = 1`.
         mockMvc.perform(put("/albums/1/song/2")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Assigned song with id: 2 to album with id: 1")))
@@ -195,6 +211,7 @@ class HappyPathIntegrationTest {
 
         // 15. **When** I `POST /artists` z artystą "Eminem" **Then** zwrócony artysta ma `id = 1`.
         mockMvc.perform(post("/artists")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Eminem"
@@ -207,6 +224,7 @@ class HappyPathIntegrationTest {
 
         // 16. **When** I `PUT /albums/1/artists/1` **Then** artysta `id = 1` ("Eminem") jest przypisany do albumu `id = 1`.
         mockMvc.perform(put("/albums/1/artist/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Assigned artist with id: 1 to album with id: 1")))
@@ -214,6 +232,7 @@ class HappyPathIntegrationTest {
 
         // 17. **When** I `POST /artists` z artystą "Guest" **Then** zwrócony artysta ma `id = 2`.
         mockMvc.perform(post("/artists")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Guest"
@@ -226,6 +245,7 @@ class HappyPathIntegrationTest {
 
         // 18. **When** I `PUT /albums/1/artists/2` **Then** artysta `id = 2` jest przypisany do albumu `id = 1`.
         mockMvc.perform(put("/albums/1/artist/2")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Assigned artist with id: 2 to album with id: 1")))
@@ -252,6 +272,7 @@ class HappyPathIntegrationTest {
 
         // 20. **When** I `DELETE /artists/2` **Then** artysta `id = 2` jest usunięty, w albumie `id = 1` pozostaje tylko artysta `id = 1`, piosenki pozostają.
         mockMvc.perform(delete("/artists/2")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Artist with id: 2 have been deleted.")))
@@ -263,6 +284,7 @@ class HappyPathIntegrationTest {
 
         // 22. **When** I `DELETE /songs/1` **Then** piosenka `id = 1` jest usunięta, album `id = 1` i artysta `id = 1` pozostają.
         mockMvc.perform(delete("/songs/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Song with id: 1 have been deleted.")))
@@ -284,6 +306,7 @@ class HappyPathIntegrationTest {
 
         // 24. **When** I `DELETE /songs/2` **Then** piosenka `id = 2` jest usunięta, album `id = 1` i artysta `id = 1` pozostają.
         mockMvc.perform(delete("/songs/2")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Song with id: 2 have been deleted.")))
@@ -297,6 +320,7 @@ class HappyPathIntegrationTest {
 
 //        26. **When** I `DELETE /albums/1` **Then** album `id = 1` jest usunięty.
         mockMvc.perform(delete("/albums/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Album with id: 1 deleted successfully")))
@@ -304,6 +328,7 @@ class HappyPathIntegrationTest {
 
 //        27. **When** I `PUT /artists/1` z nazwą "EminemUpdated" **Then** nazwa artysty zostaje zaktualizowana.
         mockMvc.perform(put("/artists/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "newArtistName": "EminemUpdated"
@@ -316,6 +341,7 @@ class HappyPathIntegrationTest {
 
         //28. **When** I `PUT /genres/1` z nazwą "RapUpdated" **Then** nazwa gatunku zostaje zmieniona.
         mockMvc.perform(put("/genres/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "newGenreName": "RapUpdated"
@@ -328,6 +354,7 @@ class HappyPathIntegrationTest {
 
         //29. **When** I `POST /songs` z piosenką "NewSong3", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "POLISH" **Then** zwrócona piosenka ma `id = 3`.
         mockMvc.perform(post("/songs")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "NewSong3",
@@ -346,6 +373,7 @@ class HappyPathIntegrationTest {
         //- dodawać/usuwać artystów (`PUT/DELETE /albums/{id}/artists/{id}`),
         //- zmieniać nazwę albumu/releaseDate (`PATCH /albums/{id}`).
         mockMvc.perform(post("/albums")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "songId": 3,
@@ -368,12 +396,14 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.song[0].name", is("NewSong3")));
         // dodanie artysty
         mockMvc.perform(put("/albums/2/artist/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Assigned artist with id: 1 to album with id: 2")))
                 .andExpect(jsonPath("$.status", is("OK")));
         // usuwanie piosenki
         mockMvc.perform(delete("/albums/2/song/3")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Song with id: 3 has been deleted from album with id: 2")))
@@ -392,12 +422,14 @@ class HappyPathIntegrationTest {
 
         // usuwanie artysta
         mockMvc.perform(delete("/albums/2/artist/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Artist with id: 1 has been deleted from album with id: 2")))
                 .andExpect(jsonPath("$.status", is("OK")));
         // dodanie piosenki
         mockMvc.perform(put("/albums/2/song/3")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Assigned song with id: 3 to album with id: 2")))
@@ -415,6 +447,7 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.song", hasSize(1)));
 //        zmieniamy nazwę albumu (`PATCH /albums/{id}`).
         mockMvc.perform(patch("/albums/2")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "title": "Patch update title and releaseDate",
@@ -434,6 +467,7 @@ class HappyPathIntegrationTest {
 
         //31. **When** I `PUT /songs/3/artist/1` **Then** piosenka `id = 3` jest przypisana do artysty `id = 1`.
         mockMvc.perform(put("/songs/3/artist/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Assigned song with id: 3 to artist with id: 1")))
@@ -441,6 +475,7 @@ class HappyPathIntegrationTest {
 
         // 32. **When** I `POST /songs` z piosenką "Song_4", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "ENGLISH" **Then** zwrócona piosenka ma `id = 4`.
         mockMvc.perform(post("/songs")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Song_4",
@@ -457,6 +492,7 @@ class HappyPathIntegrationTest {
 
         //33. **When** I `PUT /songs/4/album/2` **Then** piosenka `id = 4` jest przypisana do albumu `id = 2`.
         mockMvc.perform(put("/songs/4/album/2")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("Assigned song with id: 4 to album with id: 2")))
@@ -464,6 +500,7 @@ class HappyPathIntegrationTest {
 
         //34. **When** I `PUT /songs/3/genre/1` **Then** piosenka `id = 3` jest przypisana do gatunku `id = 1`.
         mockMvc.perform(put("/songs/3/genre/1")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message", is("For the song with id: 3 the genre was changed to id: 1")))
@@ -471,6 +508,7 @@ class HappyPathIntegrationTest {
 
         //35. **When** I `PATCH /songs/3` **Then** edytuje name, releaseDate, duration.
         mockMvc.perform(patch("/songs/3")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Alalala new songName",
@@ -498,6 +536,7 @@ class HappyPathIntegrationTest {
 
         // 36. **When** I `POST /genres` z gatunkiem "Pop" **Then** zwrócony gatunek ma `id = 2`.
         mockMvc.perform(post("/genres")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Pop"
@@ -510,6 +549,7 @@ class HappyPathIntegrationTest {
 
         // 37. **When** I `POST /artists` z artystą "Balak" **Then** zwrócony artysta ma `id = 3`.
         mockMvc.perform(post("/artists")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "Balak"
@@ -522,6 +562,7 @@ class HappyPathIntegrationTest {
 
         //38 **When** I `PATCH /songs/3` **Then** edytuje language, genreId, listę artistIds.
         mockMvc.perform(patch("/songs/3")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "language": "POLISH",
@@ -549,6 +590,7 @@ class HappyPathIntegrationTest {
 
         //39. **When** I `POST /artist/album/song` z nazwą artysty "DefaultArtist" **Then** utworzy artystę z `id = 4` oraz utworzy przypisany album z przypisaną do artysty piosenką.
         mockMvc.perform(post("/artists/album/song")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "name": "DefaultArtist"
@@ -563,6 +605,7 @@ class HappyPathIntegrationTest {
 
         //40. **When** I `PATCH /albums/2` **Then** mogę zmienić title albo releaseDate.
         mockMvc.perform(patch("/albums/2")
+                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
                         .content("""
                                 {
                                   "title": "Java"
@@ -636,6 +679,14 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.albums", hasSize(1)))
                 .andExpect(jsonPath("$.albums[0].id", is(3)))
                 .andExpect(jsonPath("$.albums[0].name", startsWith("default-album:")));
+    }
+
+    private JwtAuthenticationToken createJwtWithAdminRole() {
+        Jwt jwt = Jwt.withTokenValue("123")
+                .claim("email", "maks.abramovich.1995@gmail.com")
+                .header("alg", "none")
+                .build();
+        return jwtAuthConverter.convert(jwt);
     }
 }
 
