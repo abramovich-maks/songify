@@ -54,9 +54,15 @@ class HappyPathIntegrationTest {
 
     @Test
     public void happy_path() throws Exception {
-        // 1. **When** I `GET /songs` **Then** widzę brak piosenek.
+        // 1. **When** I `GET /songs` without jwt **Then** widzę brak piosenek.
         mockMvc.perform(get("/songs")
-                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.songs", empty()));
+
+        // SECURITY STEP when i go to /songs with jwt token then I can see no songs
+        mockMvc.perform(get("/songs")
+                        .with(jwt())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.songs", empty()));
@@ -78,9 +84,18 @@ class HappyPathIntegrationTest {
                 .andExpect(jsonPath("$.song.name", is("Till I Collapse")))
                 .andExpect(jsonPath("$.song.genre", is("default")));
 
+        // SECURITY STEP when i post to /songs without jwt  then 401 unauthorized is returned
+        mockMvc.perform(post("/songs"))
+                .andExpect(status().isUnauthorized());
+
+        // SECURITY STEP when i post to /songs as role User  then 403 forbidden is returned
+        mockMvc.perform(post("/songs")
+                        .with(authentication(createJwtWithUserRole())))
+                .andExpect(status().isForbidden());
+
         // 3. **When** I `POST /songs` z piosenką "Lose Yourself", releaseDate: "2025-10-10T08:57:09.358Z", duration: 123, language: "ENGLISH" **Then** zwrócona piosenka ma `id = 2`.
         mockMvc.perform(post("/songs")
-                        .with(jwt().authorities(() -> "ROLE_ADMIN"))
+                        .with(authentication(createJwtWithAdminRole()))
                         .content("""
                                 {
                                   "name": "Lose Yourself",
@@ -684,6 +699,14 @@ class HappyPathIntegrationTest {
     private JwtAuthenticationToken createJwtWithAdminRole() {
         Jwt jwt = Jwt.withTokenValue("123")
                 .claim("email", "maks.abramovich.1995@gmail.com")
+                .header("alg", "none")
+                .build();
+        return jwtAuthConverter.convert(jwt);
+    }
+
+    private JwtAuthenticationToken createJwtWithUserRole() {
+        Jwt jwt = Jwt.withTokenValue("123")
+                .claim("email", "jack@gmail.com")
                 .header("alg", "none")
                 .build();
         return jwtAuthConverter.convert(jwt);
