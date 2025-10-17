@@ -47,8 +47,9 @@ class SecurityConfig {
             /* JwtAuthTokenFilter jwtAuthTokenFilter, */
                                             CookieTokenResolver cookieTokenResolver) throws Exception {
         http
+                .csrf(Customizer.withDefaults())
                 .csrf(c -> c.disable())
-                .cors(corsConfigurerCustomizer())
+//                .cors(corsConfigurerCustomizer())
                 .formLogin(c -> c.disable())
                 .httpBasic(c -> c.disable())
                 .oauth2Login(oauth -> oauth.successHandler(mySuccessHandler))
