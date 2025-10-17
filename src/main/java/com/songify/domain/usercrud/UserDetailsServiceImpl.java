@@ -8,14 +8,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Log4j2
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsManager {
-
-    private static final String DEFAULT_USER_ROLE = "ROLE_USER";
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -37,14 +36,15 @@ public class UserDetailsServiceImpl implements UserDetailsManager {
         }
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         String confirmationToken = UUID.randomUUID().toString();
+        List<String> authorities = user.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
         User createdUser = new User(
                 user.getUsername(),
                 encodedPassword,
                 confirmationToken,
-                user.getAuthorities()
-                        .stream()
-                        .map(GrantedAuthority::getAuthority)
-                        .collect(Collectors.toList())
+                authorities
         );
         User savedUser = userRepository.save(createdUser);
         log.warn("Saved user with id: {}", savedUser.getId());

@@ -29,6 +29,7 @@ class RegisterController {
         UserDetails user = User.builder()
                 .username(username)
                 .password(password)
+                .authorities("ROLE_USER")
                 .build();
         userDetailsManager.createUser(user);
         return ResponseEntity.ok(new RegisterUserResponseDto("Created user"));
