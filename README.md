@@ -74,7 +74,7 @@ Aplikacja backendowa działa w trybie **HTTPS** z własnym certyfikatem SSL oraz
 ---
 
 ## 🖼️ Diagram bazy danych
-![Diagram bazy danych](./images/db-diagram.png)
+![Diagram bazy danych](./assets/db-diagram.png)
 
 ---
 
